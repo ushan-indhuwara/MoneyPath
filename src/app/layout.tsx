@@ -40,6 +40,10 @@ export const metadata: Metadata = {
     description:
       'See your numbers. Understand your options. Compare Debt Snowball vs Avalanche, savings goals, and 3-scenario retirement growth.',
   },
+  icons: {
+    icon: '/icon.png',
+    apple: '/apple-icon.png',
+  },
   robots: {
     index: true,
     follow: true,

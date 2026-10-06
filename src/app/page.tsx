@@ -12,7 +12,6 @@ import {
   Brain,
   Lock,
   CheckCircle2,
-  BookOpen,
   Sparkles,
   Zap,
 } from 'lucide-react';
@@ -291,30 +290,6 @@ export default function HomePage() {
               <p className="text-xs text-slate-600 leading-relaxed">{art.excerpt}</p>
             </Link>
           ))}
-        </div>
-      </section>
-
-      {/* Newsletter Placeholder */}
-      <section className="max-w-4xl mx-auto px-4">
-        <div className="p-8 sm:p-10 rounded-3xl bg-emerald-900 text-white text-center space-y-4 shadow-xl">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Stay Informed on Financial Planning</h2>
-          <p className="text-sm text-emerald-100 max-w-xl mx-auto">
-            Get plain-language guides on debt payoff, interest rate shifts, and savings strategies delivered straight to your inbox. No spam.
-          </p>
-          <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto pt-2">
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              className="px-4 py-3 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none text-sm flex-grow"
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition-colors shrink-0"
-            >
-              Subscribe Free
-            </button>
-          </form>
-          <p className="text-[11px] text-emerald-200/80">We respect your privacy. Unsubscribe at any time.</p>
         </div>
       </section>
     </div>

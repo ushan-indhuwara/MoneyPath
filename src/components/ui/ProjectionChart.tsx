@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -51,6 +51,19 @@ export function ProjectionChart({
   height = 320,
 }: ProjectionChartProps) {
   const { currencySymbol } = useCountry();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="w-full bg-white p-4 rounded-xl border border-slate-200">
+        <div style={{ height }} className="w-full bg-slate-50 animate-pulse rounded-xl" />
+      </div>
+    );
+  }
 
   const formatTooltipValue = (value: number) => {
     return `${currencySymbol}${value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;

@@ -12,10 +12,10 @@ export default function NotFound() {
         <div className="space-y-2">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">404 — Page Not Found</span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            We couldn't calculate a path to this page.
+            We couldn&apos;t calculate a path to this page.
           </h1>
           <p className="text-sm text-slate-600">
-            The route you are looking for may have moved or doesn't exist. Let's get you back on track.
+            The route you are looking for may have moved or doesn&apos;t exist. Let&apos;s get you back on track.
           </p>
         </div>
         <div>

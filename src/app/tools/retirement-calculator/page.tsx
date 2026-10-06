@@ -27,18 +27,16 @@ export default function RetirementCalculatorPage() {
   const [copied, setCopied] = useState<boolean>(false);
   const [selectedScenarioTab, setSelectedScenarioTab] = useState<'base' | 'conservative' | 'optimistic'>('base');
 
-  const inputs: RetirementInputs = {
-    currentAge,
-    targetRetirementAge,
-    currentSavings,
-    monthlyContribution,
-    annualGrowthRate,
-    annualContributionIncreasePercent,
-  };
-
   const result = useMemo(() => {
-    return calculateRetirement(inputs);
-  }, [inputs]);
+    return calculateRetirement({
+      currentAge,
+      targetRetirementAge,
+      currentSavings,
+      monthlyContribution,
+      annualGrowthRate,
+      annualContributionIncreasePercent,
+    });
+  }, [currentAge, targetRetirementAge, currentSavings, monthlyContribution, annualGrowthRate, annualContributionIncreasePercent]);
 
   const activeOutcome =
     selectedScenarioTab === 'base'

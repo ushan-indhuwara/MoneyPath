@@ -1,7 +1,7 @@
 import React from 'react';
 import { Breadcrumbs } from '@/components/ui/DisclaimerBox';
 import { Metadata } from 'next';
-import { ShieldCheck, Target, HeartHandshake, Code } from 'lucide-react';
+import { ShieldCheck, Code } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About MoneyPath AI — Mission & Platform Purpose',
@@ -20,7 +20,7 @@ export default function AboutPage() {
               About MoneyPath AI
             </h1>
             <p className="text-lg text-slate-600 leading-relaxed">
-              "See your numbers. Understand your options."
+              &quot;See your numbers. Understand your options.&quot;
             </p>
           </div>
 

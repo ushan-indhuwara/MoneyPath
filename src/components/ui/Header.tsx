@@ -17,6 +17,8 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
+import Image from 'next/image';
+
 export function Header() {
   const pathname = usePathname();
   const { country, setCountry } = useCountry();
@@ -56,9 +58,13 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2.5 font-bold text-xl text-slate-900 tracking-tight">
-            <div className="w-9 h-9 rounded-xl bg-emerald-700 flex items-center justify-center text-white shadow-sm font-black text-lg">
-              M
-            </div>
+            <Image
+              src="/logo.png"
+              alt="MoneyPath AI Logo"
+              width={36}
+              height={36}
+              className="w-9 h-9 object-contain rounded-lg shadow-sm"
+            />
             <span className="flex items-center">
               MoneyPath <span className="text-emerald-700 font-semibold ml-1 text-sm bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">AI</span>
             </span>

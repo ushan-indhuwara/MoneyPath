@@ -26,18 +26,16 @@ export default function SavingsGoalCalculatorPage() {
   const [annualInterestRate, setAnnualInterestRate] = useState<number>(4.5);
   const [copied, setCopied] = useState<boolean>(false);
 
-  const inputs: SavingsGoalInputs = {
-    mode,
-    targetAmount,
-    currentSavings,
-    goalTimeframeMonths,
-    monthlyContribution,
-    annualInterestRate,
-  };
-
   const result = useMemo(() => {
-    return calculateSavingsGoal(inputs);
-  }, [inputs]);
+    return calculateSavingsGoal({
+      mode,
+      targetAmount,
+      currentSavings,
+      goalTimeframeMonths,
+      monthlyContribution,
+      annualInterestRate,
+    });
+  }, [mode, targetAmount, currentSavings, goalTimeframeMonths, monthlyContribution, annualInterestRate]);
 
   // Format data for chart
   const chartData = useMemo(() => {
@@ -66,7 +64,7 @@ Target Goal: ${formatCurrency(result.targetAmount, country)}
 Required Monthly Deposit: ${formatCurrency(result.requiredMonthlyContribution, country)}
 Timeframe to Goal: ${formatDuration(result.timeToGoalMonths)}
 Total Personal Deposits: ${formatCurrency(result.totalUserContributions, country)}
-Estimated Interest Growth: ${formatCurrency(result.estimatedGrowthInterest, country)} (${inputs.annualInterestRate}% APR)
+Estimated Interest Growth: ${formatCurrency(result.estimatedGrowthInterest, country)} (${annualInterestRate}% APR)
 Calculated at https://moneypath.ai/tools/savings-goal-calculator`;
 
     navigator.clipboard.writeText(text);

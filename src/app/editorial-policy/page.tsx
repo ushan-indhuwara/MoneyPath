@@ -40,7 +40,7 @@ export default function EditorialPolicyPage() {
             <section className="space-y-2 border-t border-slate-100 pt-4">
               <h2 className="text-xl font-bold text-slate-900">3. AI Transparency</h2>
               <p>
-                When plain-language explanations are generated using our optional AI feature, they are explicitly labeled with an "AI-generated explanation" badge. AI output is constrained by system guardrails prohibiting financial product recommendations.
+                When plain-language explanations are generated using our optional AI feature, they are explicitly labeled with an &quot;AI-generated explanation&quot; badge. AI output is constrained by system guardrails prohibiting financial product recommendations.
               </p>
             </section>
 

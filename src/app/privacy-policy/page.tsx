@@ -36,14 +36,14 @@ export default function PrivacyPolicyPage() {
             <section className="space-y-2 border-t border-slate-100 pt-4">
               <h2 className="text-xl font-bold text-slate-900">3. AI Feature Data Handling</h2>
               <p>
-                If you voluntarily click the optional "Explain My Results" button, only minimum non-identifiable numeric scenario outputs (e.g., payoff months count, calculated interest difference) are sent to our server API route for plain-language interpretation. No personal identity data is ever attached or transmitted.
+                If you voluntarily click the optional &quot;Explain My Results&quot; button, only minimum non-identifiable numeric scenario outputs (e.g., payoff months count, calculated interest difference) are sent to our server API route for plain-language interpretation. No personal identity data is ever attached or transmitted.
               </p>
             </section>
 
             <section className="space-y-2 border-t border-slate-100 pt-4">
               <h2 className="text-xl font-bold text-slate-900">4. Local Browser Storage</h2>
               <p>
-                We may store minor preference settings (such as your chosen market currency preference US $ or UK £) in your browser's <code className="bg-slate-100 px-1 py-0.5 rounded">localStorage</code> for convenience. You can clear this storage at any time via browser settings.
+                We may store minor preference settings (such as your chosen market currency preference US $ or UK £) in your browser&apos;s <code className="bg-slate-100 px-1 py-0.5 rounded">localStorage</code> for convenience. You can clear this storage at any time via browser settings.
               </p>
             </section>
           </div>

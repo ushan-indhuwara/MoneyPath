@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,9 +14,13 @@ export function Footer() {
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2.5 font-bold text-xl text-white tracking-tight">
-              <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-black text-lg">
-                M
-              </div>
+              <Image
+                src="/logo.png"
+                alt="MoneyPath AI Logo"
+                width={32}
+                height={32}
+                className="w-8 h-8 object-contain rounded-lg"
+              />
               <span>MoneyPath AI</span>
             </Link>
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
