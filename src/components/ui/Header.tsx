@@ -59,7 +59,7 @@ export function Header() {
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2.5 font-bold text-xl text-slate-900 tracking-tight">
             <Image
-              src="/logo.png"
+              src="/moneypath-avatar.png"
               alt="MoneyPath AI Logo"
               width={36}
               height={36}
