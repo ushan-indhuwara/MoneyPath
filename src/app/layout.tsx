@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import { CountryProvider } from '@/lib/country/context';
 import { Header } from '@/components/ui/Header';
@@ -87,6 +88,18 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-3RWK7G7E9"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-3RWK7G7E9');
+          `}
+        </Script>
         <CountryProvider>
           <div className="flex flex-col min-h-screen">
             <Header />
