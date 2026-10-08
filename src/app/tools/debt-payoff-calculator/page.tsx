@@ -93,7 +93,7 @@ export default function DebtPayoffCalculatorPage() {
 Avalanche Strategy: Debt-free in ${formatDuration(comparison.avalanche.monthsToPayoff)} (${comparison.avalanche.payoffDate}), Total Interest: ${formatCurrency(comparison.avalanche.totalInterestPaid, country)}
 Snowball Strategy: Debt-free in ${formatDuration(comparison.snowball.monthsToPayoff)} (${comparison.snowball.payoffDate}), Total Interest: ${formatCurrency(comparison.snowball.totalInterestPaid, country)}
 Estimated Avalanche Interest Saved: ${formatCurrency(comparison.interestDifference, country)}
-Calculated at https://moneypath.ai/tools/debt-payoff-calculator`;
+Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
 
     navigator.clipboard.writeText(text);
     setCopied(true);

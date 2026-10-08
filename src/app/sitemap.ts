@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { ARTICLES } from '@/content/articles';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://moneypath.ai';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://moneypathai.vercel.app';
 
   const routes = [
     '',

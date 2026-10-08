@@ -5,7 +5,7 @@ import { Header } from '@/components/ui/Header';
 import { Footer } from '@/components/ui/Footer';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://moneypath.ai'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://moneypathai.vercel.app'),
   title: {
     default: 'MoneyPath AI — Free Financial Calculators & Scenario Engine',
     template: '%s | MoneyPath AI',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://moneypath.ai',
+    url: 'https://moneypathai.vercel.app',
     title: 'MoneyPath AI — See Your Numbers. Understand Your Options.',
     description:
       'Free educational personal-finance calculators for US & UK. Compare debt payoff strategies, savings timelines, and retirement scenarios.',
@@ -62,7 +62,7 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'MoneyPath AI',
-    url: 'https://moneypath.ai',
+    url: 'https://moneypathai.vercel.app',
     description: 'Educational financial calculators for debt payoff, savings goals, and retirement planning.',
   };
 
@@ -70,8 +70,8 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'MoneyPath AI',
-    url: 'https://moneypath.ai',
-    logo: 'https://moneypath.ai/logo.png',
+    url: 'https://moneypathai.vercel.app',
+    logo: 'https://moneypathai.vercel.app/logo.png',
   };
 
   return (

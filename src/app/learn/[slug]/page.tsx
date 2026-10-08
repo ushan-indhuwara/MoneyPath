@@ -52,7 +52,7 @@ export default function ArticleDetailPage({ params }: Props) {
       name: 'MoneyPath AI',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://moneypath.ai/logo.png',
+        url: 'https://moneypathai.vercel.app/logo.png',
       },
     },
   };

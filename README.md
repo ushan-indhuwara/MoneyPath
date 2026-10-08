@@ -164,7 +164,7 @@ The application features a global Country Provider. Users can switch between **U
 ## 🔍 Google Search Console & Analytics Setup
 
 1. Verify site ownership in [Google Search Console](https://search.google.com/search-console).
-2. Submit your sitemap URL: `https://moneypath.ai/sitemap.xml`.
+2. Submit your sitemap URL: `https://moneypathai.vercel.app/sitemap.xml`.
 3. (Optional) For privacy-friendly analytics, add Vercel Analytics or Google Analytics in `src/app/layout.tsx`.
 
 ---

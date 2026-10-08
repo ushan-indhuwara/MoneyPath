@@ -65,7 +65,7 @@ Required Monthly Deposit: ${formatCurrency(result.requiredMonthlyContribution, c
 Timeframe to Goal: ${formatDuration(result.timeToGoalMonths)}
 Total Personal Deposits: ${formatCurrency(result.totalUserContributions, country)}
 Estimated Interest Growth: ${formatCurrency(result.estimatedGrowthInterest, country)} (${annualInterestRate}% APR)
-Calculated at https://moneypath.ai/tools/savings-goal-calculator`;
+Calculated at https://moneypathai.vercel.app/tools/savings-goal-calculator`;
 
     navigator.clipboard.writeText(text);
     setCopied(true);

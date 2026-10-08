@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://moneypath.ai';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://moneypathai.vercel.app';
 
   return {
     rules: {

@@ -75,7 +75,7 @@ Base Growth Scenario (${result.baseScenario.growthRate}%): ${formatCurrency(resu
 Conservative Scenario (${result.conservativeScenario.growthRate}%): ${formatCurrency(result.conservativeScenario.projectedBalance, country)}
 Optimistic Scenario (${result.optimisticScenario.growthRate}%): ${formatCurrency(result.optimisticScenario.projectedBalance, country)}
 Total Personal Contributions: ${formatCurrency(result.baseScenario.totalContributions, country)}
-Calculated at https://moneypath.ai/tools/retirement-calculator`;
+Calculated at https://moneypathai.vercel.app/tools/retirement-calculator`;
 
     navigator.clipboard.writeText(text);
     setCopied(true);

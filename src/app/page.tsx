@@ -101,7 +101,7 @@ export default function HomePage() {
                     <div className="w-3 h-3 rounded-full bg-amber-500"></div>
                     <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
                   </div>
-                  <span className="text-xs font-mono text-slate-400">moneypath.ai/demo</span>
+                  <span className="text-xs font-mono text-slate-400">moneypathai.vercel.app/demo</span>
                 </div>
 
                 <div className="space-y-3">
