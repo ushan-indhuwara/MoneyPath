@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'MoneyPath Editorial Team' }],
   creator: 'MoneyPath AI',
+  verification: {
+    google: 'G9VM_6PYGSAcUVxe55U-E_H1S5VQreyzTJ8iqjIW5Ro',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
