@@ -87,9 +87,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}
         />
       </head>
+
+
+     
       <body>
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-3RWK7G7E9"
+          src="https://www.googletagmanager.com/gtag/js?id=G-NHDM7MJ8X2"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -97,9 +100,10 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){window.dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-3RWK7G7E9');
+            gtag('config', 'G-NHDM7MJ8X2');
           `}
         </Script>
+
         <CountryProvider>
           <div className="flex flex-col min-h-screen">
             <Header />
@@ -108,6 +112,9 @@ export default function RootLayout({
           </div>
         </CountryProvider>
       </body>
+
+
+
     </html>
   );
 }
