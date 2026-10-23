@@ -22,8 +22,8 @@ export default function HomePage() {
   const articles = [
     {
       slug: 'debt-snowball-vs-avalanche',
-      title: "Debt Snowball vs Debt Avalanche: What's the Difference?",
-      excerpt: 'Compare psychological momentum against interest savings to determine which debt payoff method fits your goal.',
+      title: 'Debt Snowball vs. Debt Avalanche: Which Should You Choose?',
+      excerpt: 'Compare the debt snowball and debt avalanche methods, see a practical example, and choose a repayment strategy that fits your priorities.',
       category: 'Debt Strategy',
     },
     {

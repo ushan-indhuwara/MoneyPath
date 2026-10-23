@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import { canonicalUrl, SITE_ORIGIN } from '@/lib/seo';
+import { ArticleContent } from '@/components/ui/ArticleContent';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -38,7 +39,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const articleCanonical = canonicalUrl(`/learn/${article.slug}`);
 
   return {
-    title: `${article.title} | MoneyPath Learn`,
+    title: article.seoTitle
+      ? { absolute: article.seoTitle }
+      : `${article.title} | MoneyPath Learn`,
     description: article.excerpt,
 
     alternates: {
@@ -51,6 +54,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       url: articleCanonical,
       authors: [article.author],
+      siteName: 'MoneyPath AI',
+    },
+
+    twitter: {
+      card: 'summary',
+      title: article.title,
+      description: article.excerpt,
     },
 
     robots: {
@@ -75,6 +85,8 @@ export default async function ArticleDetailPage({ params }: Props) {
     '@type': 'Article',
     headline: article.title,
     description: article.excerpt,
+    url: articleCanonical,
+    ...(article.datePublished ? { datePublished: article.datePublished } : {}),
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': articleCanonical,
@@ -145,39 +157,14 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           {/* Article Body */}
           <div className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-emerald-700 hover:prose-a:underline leading-relaxed space-y-4 text-slate-800 text-base">
-            {article.content.split('\n\n').map((paragraph, idx) => {
-              if (paragraph.startsWith('### ')) {
-                return (
-                  <h3
-                    key={idx}
-                    className="text-xl font-bold text-slate-900 pt-4"
-                  >
-                    {paragraph.replace('### ', '')}
-                  </h3>
-                );
-              }
-
-              if (paragraph.startsWith('* ')) {
-                return (
-                  <ul key={idx} className="list-disc pl-6 space-y-1 my-2">
-                    {paragraph.split('\n').map((item, itemIdx) => (
-                      <li key={itemIdx}>
-                        {item.replace(/^\*\s/, '')}
-                      </li>
-                    ))}
-                  </ul>
-                );
-              }
-
-              return <p key={idx}>{paragraph}</p>;
-            })}
+            <ArticleContent content={article.content} />
           </div>
 
           {/* Authoritative Sources */}
           {article.sources && article.sources.length > 0 && (
             <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                Authoritative Reference Sources
+                Sources and Further Reading
               </h4>
 
               <ul className="space-y-2 text-xs">
