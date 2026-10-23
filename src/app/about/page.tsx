@@ -1,12 +1,13 @@
 import React from 'react';
 import { Breadcrumbs } from '@/components/ui/DisclaimerBox';
-import { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/seo';
 import { ShieldCheck, Code } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'About MoneyPath AI — Mission & Platform Purpose',
-  description: 'Learn about MoneyPath AI, our commitment to transparent math, privacy-first design, and educational finance tools.',
-};
+export const metadata = createPageMetadata(
+  'About MoneyPath AI — Mission & Platform Purpose',
+  'Learn about MoneyPath AI, our commitment to transparent math, privacy-first design, and educational finance tools.',
+  '/about'
+);
 
 export default function AboutPage() {
   return (

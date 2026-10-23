@@ -1,14 +1,13 @@
 import { MetadataRoute } from 'next';
+import { SITE_ORIGIN } from '@/lib/seo';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://moneypathai.vercel.app';
-
   return {
     rules: {
       userAgent: '*',
       allow: '/',
       disallow: ['/api/'],
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${SITE_ORIGIN}/sitemap.xml`,
   };
 }

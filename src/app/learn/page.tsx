@@ -3,13 +3,13 @@ import Link from 'next/link';
 import { ARTICLES } from '@/content/articles';
 import { Breadcrumbs } from '@/components/ui/DisclaimerBox';
 import { BookOpen, ArrowRight } from 'lucide-react';
-import { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Financial Learning Hub — Educational Guides & Debt Payoff Strategies',
-  description:
-    'Free educational articles on Debt Snowball vs Avalanche, APR, credit card interest mechanics, compound interest formulas, and retirement estimates.',
-};
+export const metadata = createPageMetadata(
+  'Financial Learning Hub — Educational Guides & Debt Payoff Strategies',
+  'Free educational articles on Debt Snowball vs Avalanche, APR, credit card interest mechanics, compound interest formulas, and retirement estimates.',
+  '/learn'
+);
 
 export default function LearnIndexPage() {
   return (

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Breadcrumbs } from '@/components/ui/DisclaimerBox';
-import { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/seo';
 import { Mail, MessageSquare, Shield } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'Contact Us — MoneyPath AI',
-  description: 'Get in touch with the MoneyPath AI team for questions, feedback, or calculator methodology inquiries.',
-};
+export const metadata = createPageMetadata(
+  'Contact Us — MoneyPath AI',
+  'Get in touch with the MoneyPath AI team for questions, feedback, or calculator methodology inquiries.',
+  '/contact'
+);
 
 // Configurable contact email placeholder
 const CONTACT_EMAIL = 'hello@moneypath.ai';

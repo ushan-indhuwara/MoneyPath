@@ -1,11 +1,10 @@
 import { MetadataRoute } from 'next';
 import { ARTICLES } from '@/content/articles';
+import { canonicalUrl } from '@/lib/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://moneypathai.vercel.app';
-
   const routes = [
-    '',
+    '/',
     '/tools/debt-payoff-calculator',
     '/tools/savings-goal-calculator',
     '/tools/retirement-calculator',
@@ -17,15 +16,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/financial-disclaimer',
     '/contact',
   ].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+    url: canonicalUrl(route),
     changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1.0 : route.startsWith('/tools') ? 0.9 : 0.7,
+    priority: route === '/' ? 1.0 : route.startsWith('/tools') ? 0.9 : 0.7,
   }));
 
   const articleRoutes = ARTICLES.map((art) => ({
-    url: `${baseUrl}/learn/${art.slug}`,
-    lastModified: new Date(),
+    url: canonicalUrl(`/learn/${art.slug}`),
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));

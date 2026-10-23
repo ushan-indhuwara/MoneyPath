@@ -1,11 +1,12 @@
 import React from 'react';
 import { Breadcrumbs, DisclaimerBox } from '@/components/ui/DisclaimerBox';
-import { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Financial Disclaimer — MoneyPath AI',
-  description: 'MoneyPath AI full legal financial disclaimer regarding educational tools, calculation assumptions, and regulatory boundaries.',
-};
+export const metadata = createPageMetadata(
+  'Financial Disclaimer — MoneyPath AI',
+  'MoneyPath AI full legal financial disclaimer regarding educational tools, calculation assumptions, and regulatory boundaries.',
+  '/financial-disclaimer'
+);
 
 export default function FinancialDisclaimerPage() {
   return (

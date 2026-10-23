@@ -1,11 +1,12 @@
 import React from 'react';
 import { Breadcrumbs, DisclaimerBox } from '@/components/ui/DisclaimerBox';
-import { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Editorial Policy & Standards — MoneyPath AI',
-  description: 'Learn about MoneyPath AI editorial standards, authoritative sourcing guidelines, AI transparency, and affiliate independence.',
-};
+export const metadata = createPageMetadata(
+  'Editorial Policy & Standards — MoneyPath AI',
+  'Learn about MoneyPath AI editorial standards, authoritative sourcing guidelines, AI transparency, and affiliate independence.',
+  '/editorial-policy'
+);
 
 export default function EditorialPolicyPage() {
   return (

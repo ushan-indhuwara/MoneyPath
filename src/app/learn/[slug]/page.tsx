@@ -12,12 +12,11 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import type { Metadata } from 'next';
+import { canonicalUrl, SITE_ORIGIN } from '@/lib/seo';
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
-
-const SITE_URL = 'https://moneypathai.vercel.app';
 
 export async function generateStaticParams() {
   return ARTICLES.map((article) => ({
@@ -30,24 +29,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = ARTICLES.find((item) => item.slug === slug);
 
   if (!article) {
-    return {};
+    return {
+      alternates: { canonical: null },
+      robots: { index: false, follow: false },
+    };
   }
 
-  const canonicalUrl = `${SITE_URL}/learn/${article.slug}`;
+  const articleCanonical = canonicalUrl(`/learn/${article.slug}`);
 
   return {
     title: `${article.title} | MoneyPath Learn`,
     description: article.excerpt,
 
     alternates: {
-      canonical: canonicalUrl,
+      canonical: articleCanonical,
     },
 
     openGraph: {
       title: article.title,
       description: article.excerpt,
       type: 'article',
-      url: canonicalUrl,
+      url: articleCanonical,
       authors: [article.author],
     },
 
@@ -66,7 +68,7 @@ export default async function ArticleDetailPage({ params }: Props) {
     notFound();
   }
 
-  const canonicalUrl = `${SITE_URL}/learn/${article.slug}`;
+  const articleCanonical = canonicalUrl(`/learn/${article.slug}`);
 
   const jsonLdArticle = {
     '@context': 'https://schema.org',
@@ -75,7 +77,7 @@ export default async function ArticleDetailPage({ params }: Props) {
     description: article.excerpt,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': canonicalUrl,
+      '@id': articleCanonical,
     },
     author: {
       '@type': 'Organization',
@@ -86,7 +88,7 @@ export default async function ArticleDetailPage({ params }: Props) {
       name: 'MoneyPath AI',
       logo: {
         '@type': 'ImageObject',
-        url: `${SITE_URL}/logo.png`,
+        url: `${SITE_ORIGIN}/logo.png`,
       },
     },
   };

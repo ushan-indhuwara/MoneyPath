@@ -1,11 +1,12 @@
 import React from 'react';
 import { Breadcrumbs, DisclaimerBox } from '@/components/ui/DisclaimerBox';
-import { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy — MoneyPath AI',
-  description: 'MoneyPath AI privacy policy detailing zero client financial data storage, local browser calculations, and AI privacy protections.',
-};
+export const metadata = createPageMetadata(
+  'Privacy Policy — MoneyPath AI',
+  'MoneyPath AI privacy policy detailing zero client financial data storage, local browser calculations, and AI privacy protections.',
+  '/privacy-policy'
+);
 
 export default function PrivacyPolicyPage() {
   return (

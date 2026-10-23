@@ -1,12 +1,13 @@
 import React from 'react';
 import { Breadcrumbs, DisclaimerBox } from '@/components/ui/DisclaimerBox';
-import { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/seo';
 import { Calculator, CheckCircle2, AlertCircle } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'Calculation Methodology & Mathematical Formulas — MoneyPath AI',
-  description: 'Detailed technical documentation of our debt payoff algorithms (Snowball & Avalanche), compound interest formulas, and retirement scenario models.',
-};
+export const metadata = createPageMetadata(
+  'Calculation Methodology & Mathematical Formulas — MoneyPath AI',
+  'Detailed technical documentation of our debt payoff algorithms (Snowball & Avalanche), compound interest formulas, and retirement scenario models.',
+  '/methodology'
+);
 
 export default function MethodologyPage() {
   return (
