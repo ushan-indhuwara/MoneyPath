@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCountry } from '@/lib/country/context';
 import { Sparkles, AlertCircle, RefreshCw } from 'lucide-react';
 
@@ -15,6 +15,16 @@ export function AIExplanationBox({ calculatorType, data }: AIExplanationBoxProps
   const [explanation, setExplanation] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [hasRequested, setHasRequested] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/explain')
+      .then((res) => res.json())
+      .then((status) => { if (active) setEnabled(status.enabled === true); })
+      .catch(() => { if (active) setEnabled(false); });
+    return () => { active = false; };
+  }, []);
 
   const fetchExplanation = async () => {
     setLoading(true);
@@ -45,6 +55,8 @@ export function AIExplanationBox({ calculatorType, data }: AIExplanationBoxProps
     }
   };
 
+  if (!enabled) return null;
+
   return (
     <div className="w-full bg-slate-900 text-white p-6 rounded-2xl shadow-md border border-slate-800 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -55,7 +67,10 @@ export function AIExplanationBox({ calculatorType, data }: AIExplanationBoxProps
           </div>
           <h3 className="text-lg font-bold text-white mt-1">Want a Plain-Language Explanation?</h3>
           <p className="text-xs text-slate-400">
-            The calculator handled the math. AI can translate what these numbers mean for your options.
+            The calculator handled the math. If enabled, an AI service can explain the calculated results in plain language.
+          </p>
+          <p className="text-[11px] text-slate-500 mt-1">
+            Clicking Explain sends the figures shown above and selected country to this site&apos;s server. When AI is enabled, those figures are sent to OpenAI for a response. Debt account names and identifiers are excluded; savings and retirement amounts may be included.
           </p>
         </div>
 
@@ -81,7 +96,7 @@ export function AIExplanationBox({ calculatorType, data }: AIExplanationBoxProps
       {explanation && (
         <div className="pt-3 border-t border-slate-800 space-y-3">
           <div className="inline-block px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-emerald-950 text-emerald-300 border border-emerald-800">
-            AI-generated explanation
+            Explanation
           </div>
           <div className="text-sm leading-relaxed text-slate-200 space-y-2 whitespace-pre-line">
             {explanation}

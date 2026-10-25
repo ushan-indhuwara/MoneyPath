@@ -85,44 +85,23 @@ export function ComparisonCard({
 }: ComparisonCardProps) {
   return (
     <div
-      className={`p-6 rounded-2xl border transition-all ${
+      className={`p-5 rounded-2xl border transition-all ${
         isHighlighted
-          ? 'border-emerald-600 bg-emerald-50/40 shadow-md ring-2 ring-emerald-600/20'
+          ? 'border-emerald-500 bg-gradient-to-br from-white to-emerald-50 shadow-sm ring-1 ring-emerald-500/30'
           : 'border-slate-200 bg-white shadow-sm hover:border-slate-300'
       }`}
     >
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <span className="inline-block px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-700">
-            {badgeText}
-          </span>
-          <h3 className="text-xl font-bold text-slate-900 mt-1">{title}</h3>
-        </div>
-        {isHighlighted && highlightText && (
-          <span className="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-            {highlightText}
-          </span>
-        )}
+      <div className="flex items-start justify-between gap-2">
+        <div className="text-xs font-bold uppercase tracking-wide text-slate-500">{title} · {badgeText}</div>
+        {isHighlighted && highlightText && <span className="shrink-0 rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-800">{highlightText}</span>}
       </div>
-
-      <div className="space-y-3 pt-2">
-        <div className="flex justify-between items-baseline border-b border-slate-100 pb-2">
-          <span className="text-sm text-slate-600 font-medium">Debt-Free Date</span>
-          <span className="text-lg font-bold text-slate-900">{payoffDate}</span>
-        </div>
-        <div className="flex justify-between items-baseline border-b border-slate-100 pb-2">
-          <span className="text-sm text-slate-600 font-medium">Total Time</span>
-          <span className="text-base font-semibold text-slate-800">{monthsToPayoff}</span>
-        </div>
-        <div className="flex justify-between items-baseline border-b border-slate-100 pb-2">
-          <span className="text-sm text-slate-600 font-medium">Total Interest</span>
-          <span className="text-lg font-bold text-emerald-700">{totalInterest}</span>
-        </div>
-        <div className="flex justify-between items-baseline">
-          <span className="text-sm text-slate-600 font-medium">Total Paid</span>
-          <span className="text-base font-semibold text-slate-800">{totalAmountPaid}</span>
-        </div>
+      <p className="mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">{monthsToPayoff}</p>
+      <p className="text-xs text-slate-500">Estimated time to debt-free</p>
+      <div className="grid grid-cols-2 gap-2 mt-4">
+        <div className="rounded-lg bg-slate-50 p-3"><p className="text-[11px] text-slate-500">Total interest</p><p className="mt-1 text-sm font-bold text-slate-900">{totalInterest}</p></div>
+        <div className="rounded-lg bg-slate-50 p-3"><p className="text-[11px] text-slate-500">Debt-free around</p><p className="mt-1 text-sm font-bold text-slate-900">{payoffDate}</p></div>
       </div>
+      <p className="sr-only">Total estimated amount paid: {totalAmountPaid}</p>
     </div>
   );
 }

@@ -1,0 +1,970 @@
+[1mdiff --git a/.env.example b/.env.example[m
+[1mindex 0a3aef6..65c3327 100644[m
+[1m--- a/.env.example[m
+[1m+++ b/.env.example[m
+[36m@@ -1,9 +1,9 @@[m
+ # MoneyPath AI Environment Variables[m
+ [m
+[31m-# Set to true to enable server-side AI explanation generation[m
+[32m+[m[32m# AI explanations are disabled unless explicitly enabled and an OpenAI key is configured.[m
+ AI_ENABLED=false[m
+ [m
+[31m-# Optional API keys for AI explanations (Provider neutral server-side key)[m
+[32m+[m[32m# Optional server-side OpenAI API key (never expose with NEXT_PUBLIC_)[m
+ OPENAI_API_KEY=[m
+ OPENAI_MODEL=gpt-4o-mini[m
+ [m
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 373d8c7..973a6cd 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -13,7 +13,7 @@[m [mCALCULATOR DOES THE MATH.[m
+ AI EXPLAINS THE RESULT.[m
+ ```[m
+ [m
+[31m-- All financial math runs strictly via peer-reviewed, deterministic TypeScript code.[m
+[32m+[m[32m- Financial math is computed by deterministic TypeScript functions using the documented assumptions.[m
+ - Large Language Models (LLMs) are **never** used to calculate balances, interest rates, or payoff timelines.[m
+ - Optional server-side AI receives already-calculated numerical outputs to generate plain-language explanations.[m
+ [m
+[36m@@ -27,8 +27,8 @@[m [mAI EXPLAINS THE RESULT.[m
+ - **Charts:** Recharts (Responsive debt decay, savings, and retirement graphs)[m
+ - **Icons:** Lucide React[m
+ - **Testing:** Vitest[m
+[31m-- **AI Backend:** Server-side Route Handler (`/api/explain`) with provider-neutral LLM abstraction[m
+[31m-- **Deployment:** Vercel / Cloudflare Pages / Netlify (100% Free tier compatible)[m
+[32m+[m[32m- **AI Backend:** Optional server-side OpenAI explanation route (`/api/explain`)[m
+[32m+[m[32m- **Deployment:** Next.js-compatible hosting providers (pricing and runtime limits depend on provider and usage)[m
+ [m
+ ---[m
+ [m
+[36m@@ -116,7 +116,7 @@[m [mnpm start[m
+ [m
+ ## 🤖 How to Enable AI Explanations[m
+ [m
+[31m-By default, the platform operates in `AI_ENABLED=false` mode. Calculators work 100% perfectly without AI.[m
+[32m+[m[32mAI explanations are disabled unless explicitly enabled. The calculators work without an AI provider.[m
+ [m
+ To enable optional AI explanation generation:[m
+ [m
+[36m@@ -136,7 +136,7 @@[m [mTo enable optional AI explanation generation:[m
+ [m
+ ## 🌐 Configuring US / UK Markets[m
+ [m
+[31m-The application features a global Country Provider. Users can switch between **US ($)** and **UK (£)** via the header toggle.[m
+[32m+[m[32mThe application features a market and currency preference switch for **US ($)** and **UK (£)**. It changes currency formatting and selected terminology; it does not model country-specific tax, pension, or lender rules.[m
+ [m
+ - **US Mode:** Displays `$`, 401(k), IRA, CFPB reference links.[m
+ - **UK Mode:** Displays `£`, Workplace Pension, ISA, MoneyHelper/FCA reference links.[m
+[36m@@ -173,7 +173,7 @@[m [mThe application features a global Country Provider. Users can switch between **U[m
+ [m
+ - [ ] Update `CONTACT_EMAIL` in `src/app/contact/page.tsx`.[m
+ - [ ] Configure `NEXT_PUBLIC_SITE_URL` in `.env.local` to your domain.[m
+[31m-- [ ] Run `npm run test` (100% passing tests).[m
+[31m-- [ ] Run `npm run build` (Clean build without compilation errors).[m
+[32m+[m[32m- [ ] Run `npm run test` and review the results.[m
+[32m+[m[32m- [ ] Run `npm run build` and resolve any build errors.[m
+ - [ ] Verify `AI_ENABLED` mode behavior.[m
+ - [ ] Submit `sitemap.xml` to Google Search Console.[m
+[1mdiff --git a/design-preview.html b/design-preview.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..0561116[m
+[1m--- /dev/null[m
+[1m+++ b/design-preview.html[m
+[36m@@ -0,0 +1,48 @@[m
+[32m+[m[32m<!doctype html>[m
+[32m+[m[32m<html lang="en">[m
+[32m+[m[32m<head>[m
+[32m+[m[32m  <meta charset="utf-8">[m
+[32m+[m[32m  <meta name="viewport" content="width=device-width, initial-scale=1">[m
+[32m+[m[32m  <title>MoneyPath — Calculator Design Preview</title>[m
+[32m+[m[32m  <style>[m
+[32m+[m[32m    :root{--ink:#15241f;--muted:#64756e;--line:#e1e9e4;--paper:#f5f8f6;--green:#08795b;--green2:#e7f4ee;--amber:#8d5d13;--amberbg:#fff7e8;--white:#fff}[m
+[32m+[m[32m    *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}[m
+[32m+[m[32m    .top{height:66px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(5vw,24px)}[m
+[32m+[m[32m    .brand{font-weight:800;font-size:20px;letter-spacing:-.5px}.brand b{color:var(--green)}.nav{display:flex;align-items:center;gap:27px;color:#50625b;font-size:14px}.country{border:1px solid var(--line);border-radius:10px;padding:8px 11px;color:#33483f;font-weight:650}[m
+[32m+[m[32m    main{max-width:1100px;margin:34px auto;padding:0 24px 60px}.crumb{font-size:13px;color:var(--muted);margin-bottom:18px}.title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:26px}.eyebrow{font-size:12px;font-weight:750;color:var(--green);text-transform:uppercase;letter-spacing:1px}.title-row h1{font-size:34px;line-height:1.16;letter-spacing:-1px;margin:6px 0 8px}.lede{color:var(--muted);margin:0;max-width:650px}.btn{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px 14px;color:#33483f;font-weight:650;white-space:nowrap}[m
+[32m+[m[32m    .layout{display:grid;grid-template-columns:340px 1fr;gap:22px;align-items:start}.panel,.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 12px #203b2e08}.panel{padding:22px}.panel h2{font-size:16px;margin:0 0 17px}.field{margin:15px 0}.field label{display:block;font-size:12px;font-weight:700;color:#50625b;margin-bottom:6px}.input{height:43px;border:1px solid #d9e3dd;border-radius:9px;padding:10px 12px;color:#273a32;background:#fff;display:flex;justify-content:space-between;align-items:center}.hint{font-size:11px;color:#83928c;margin-top:4px}.debt{border:1px solid var(--line);border-radius:11px;padding:12px;margin:11px 0}.debt-head{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:9px}.debt-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}.mini{font-size:10px;color:#798881}.mini strong{display:block;color:#31443b;font-size:12px;margin-top:3px}.add{display:block;text-align:center;border:1px dashed #a9c6b8;color:var(--green);font-weight:700;padding:9px;border-radius:9px;margin-top:12px}.total{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:15px;margin-top:16px;font-size:13px}.primary{width:100%;background:var(--green);color:#fff;font-weight:750;border:0;border-radius:10px;padding:12px;margin-top:18px;font-size:14px}[m
+[32m+[m[32m    .results{display:grid;gap:15px}.result-head{display:flex;justify-content:space-between;align-items:center}.result-head h2{font-size:18px;margin:0}.badge{background:var(--green2);color:var(--green);border-radius:99px;padding:5px 9px;font-size:11px;font-weight:750}.strategies{display:grid;grid-template-columns:1fr 1fr;gap:12px}.strategy{padding:18px;border:1px solid var(--line);border-radius:14px;background:#fff}.strategy.best{border:2px solid #39a57e;padding:17px;background:linear-gradient(140deg,#fff,#f1faf5)}.strategy-name{font-size:12px;color:var(--muted);font-weight:750;text-transform:uppercase;letter-spacing:.5px}.amount{font-size:27px;font-weight:800;letter-spacing:-.7px;margin:8px 0 0}.sub{font-size:12px;color:var(--muted)}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}.stat{background:#f5f8f6;border-radius:9px;padding:10px;font-size:11px;color:var(--muted)}.stat strong{display:block;color:var(--ink);font-size:15px;margin-top:3px}.callout{padding:14px 16px;background:var(--amberbg);border:1px solid #f1d9a9;border-radius:12px;color:#694a17;font-size:12px}.callout b{display:block;margin-bottom:3px;font-size:13px}.assumptions{padding:18px 20px}.assumptions h3{font-size:14px;margin:0 0 8px}.assumptions ul{margin:0;padding-left:18px;color:var(--muted);font-size:12px}.assumptions li{margin:4px 0}.chart{height:155px;position:relative;overflow:hidden;padding:15px 18px}.chart-title{font-size:13px;font-weight:750}.chart svg{width:100%;height:110px;margin-top:5px}.fine{font-size:11px;color:#77877f;margin:4px 2px}.footer-note{color:#8a9791;font-size:11px;text-align:center;margin-top:26px}[m
+[32m+[m[32m    @media(max-width:800px){.nav{gap:12px}.nav a{display:none}main{margin-top:22px}.layout{grid-template-columns:1fr}.title-row h1{font-size:29px}.panel{order:1}.results{order:2}}[m
+[32m+[m[32m    @media(max-width:480px){.top{padding:0 16px}.nav{gap:8px}main{padding:0 14px 40px}.title-row{display:block}.title-row .btn{margin-top:15px}.strategies{grid-template-columns:1fr}.amount{font-size:25px}.panel{padding:17px}.debt-grid{gap:4px}}[m
+[32m+[m[32m  </style>[m
+[32m+[m[32m</head>[m
+[32m+[m[32m<body>[m
+[32m+[m[32m  <header class="top"><div class="brand"><b>Money</b>Path</div><nav class="nav"><a>Calculators</a><a>Learn</a><a>How we calculate</a><span class="country">🇺🇸 United States⌄</span></nav></header>[m
+[32m+[m[32m  <main>[m
+[32m+[m[32m    <div class="crumb">Home&nbsp; / &nbsp;Calculators&nbsp; / &nbsp;Debt payoff</div>[m
+[32m+[m[32m    <div class="title-row"><div><div class="eyebrow">Debt payoff planner</div><h1>Build a plan to pay off debt</h1><p class="lede">Compare two common payoff approaches using your balances, rates, and monthly payment budget.</p></div><button class="btn">↺ &nbsp;Reset example</button></div>[m
+[32m+[m[32m    <div class="layout">[m
+[32m+[m[32m      <section class="panel"><h2>Your debts & monthly budget</h2>[m
+[32m+[m[32m        <div class="debt"><div class="debt-head"><span>Credit card</span><span style="color:#84928c">•••</span></div><div class="debt-grid"><div class="mini">BALANCE<strong>$4,500</strong></div><div class="mini">APR<strong>22.9%</strong></div><div class="mini">MIN. PAYMENT<strong>$135</strong></div></div></div>[m
+[32m+[m[32m        <div class="debt"><div class="debt-head"><span>Personal loan</span><span style="color:#84928c">•••</span></div><div class="debt-grid"><div class="mini">BALANCE<strong>$8,000</strong></div><div class="mini">APR<strong>11.5%</strong></div><div class="mini">MIN. PAYMENT<strong>$210</strong></div></div></div>[m
+[32m+[m[32m        <div class="add">＋ Add another debt</div>[m
+[32m+[m[32m        <div class="field"><label>Extra available each month</label><div class="input"><span>$</span><span>250.00</span></div><div class="hint">In addition to the minimum payments above</div></div>[m
+[32m+[m[32m        <div class="total"><span>Estimated total monthly budget</span><strong>$595</strong></div>[m
+[32m+[m[32m        <button class="primary">Update my estimate &nbsp;→</button>[m
+[32m+[m[32m      </section>[m
+[32m+[m[32m      <section class="results">[m
+[32m+[m[32m        <div class="result-head"><h2>Your estimated comparison</h2><span class="badge">Estimate, not a guarantee</span></div>[m
+[32m+[m[32m        <div class="strategies">[m
+[32m+[m[32m          <article class="strategy best"><div class="strategy-name">Avalanche · lowest estimated interest</div><div class="amount">~3 yr 2 mo</div><div class="sub">Estimated time to debt-free</div><div class="stats"><div class="stat">Total interest<strong>$2,140</strong></div><div class="stat">Debt-free around<strong>Dec 2029</strong></div></div></article>[m
+[32m+[m[32m          <article class="strategy"><div class="strategy-name">Snowball · smaller balances first</div><div class="amount">~3 yr 4 mo</div><div class="sub">Estimated time to debt-free</div><div class="stats"><div class="stat">Total interest<strong>$2,480</strong></div><div class="stat">Debt-free around<strong>Feb 2030</strong></div></div></article>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <div class="callout"><b>Payment check</b>Your current monthly budget appears sufficient to cover the estimated interest and minimum payments for each listed debt.</div>[m
+[32m+[m[32m        <div class="card chart"><div class="chart-title">Estimated remaining balance</div><svg viewBox="0 0 700 115" preserveAspectRatio="none" aria-label="Illustrative debt balance chart"><path d="M0 12H700M0 47H700M0 82H700" stroke="#e7ede9" stroke-width="1"/><path d="M8 8 C100 18 120 35 205 42 S330 66 410 72 S560 98 692 105" fill="none" stroke="#07835f" stroke-width="3"/><path d="M8 8 C105 16 150 31 240 38 S360 54 455 68 S570 91 692 103" fill="none" stroke="#7292c3" stroke-width="3"/><text x="8" y="113" fill="#819087" font-size="10">Today</text><text x="640" y="113" fill="#819087" font-size="10">Payoff</text></svg></div>[m
+[32m+[m[32m        <div class="card assumptions"><h3>What this estimate assumes</h3><ul><li>Interest is approximated monthly using APR ÷ 12.</li><li>You keep paying the same total monthly budget; freed minimum payments roll to the next debt.</li><li>Fees, promotional rates, and lender-specific daily interest rules are not included.</li></ul></div>[m
+[32m+[m[32m        <p class="fine">This educational estimate is based only on the details entered. Actual lender balances and payoff dates may differ.</p>[m
+[32m+[m[32m      </section>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m    <div class="footer-note">VISUAL DESIGN PREVIEW · Desktop layout shown · Cards stack on small screens</div>[m
+[32m+[m[32m  </main>[m
+[32m+[m[32m</body>[m
+[32m+[m[32m</html>[m
+[1mdiff --git a/src/app/about/page.tsx b/src/app/about/page.tsx[m
+[1mindex f6cd37f..7f7bc32 100644[m
+[1m--- a/src/app/about/page.tsx[m
+[1m+++ b/src/app/about/page.tsx[m
+[36m@@ -35,7 +35,7 @@[m [mexport default function AboutPage() {[m
+               CALCULATOR DOES THE MATH. AI EXPLAINS THE RESULT.[m
+             </p>[m
+             <p>[m
+[31m-              We firmly believe that financial math should be 100% deterministic and transparent. Every payoff schedule, savings projection, and compound interest curve on MoneyPath is calculated by peer-reviewed TypeScript code—never by an unpredictable LLM. Optional server-side AI is used exclusively to translate structured mathematical outcomes into plain, understandable English.[m
+[32m+[m[32m              MoneyPath keeps the calculations separate from optional explanations. Payoff schedules and savings projections are computed by application code using documented assumptions; an AI model does not calculate balances. Optional explanations can describe the resulting figures when the site operator enables the feature.[m
+             </p>[m
+ [m
+             <h2 className="text-xl font-bold text-slate-900 pt-4">Who We Target</h2>[m
+[1mdiff --git a/src/app/api/explain/route.ts b/src/app/api/explain/route.ts[m
+[1mindex 540a964..0cdc14f 100644[m
+[1m--- a/src/app/api/explain/route.ts[m
+[1m+++ b/src/app/api/explain/route.ts[m
+[36m@@ -2,11 +2,24 @@[m [mimport { NextRequest, NextResponse } from 'next/server';[m
+ import { generateFinancialExplanation } from '@/lib/ai/explanation';[m
+ import { AIExplanationRequest } from '@/types/financial';[m
+ [m
+[32m+[m[32mexport async function GET() {[m
+[32m+[m[32m  return NextResponse.json({ enabled: process.env.AI_ENABLED === 'true' && Boolean(process.env.OPENAI_API_KEY) });[m
+[32m+[m[32m}[m
+[32m+[m
+ export async function POST(req: NextRequest) {[m
+   try {[m
+[31m-    const body: AIExplanationRequest = await req.json();[m
+[32m+[m[32m    const rawBody = await req.text();[m
+[32m+[m[32m    if (new TextEncoder().encode(rawBody).byteLength > 16_384) {[m
+[32m+[m[32m      return NextResponse.json({ explanation: null, error: 'Request is too large.' }, { status: 413 });[m
+[32m+[m[32m    }[m
+[32m+[m[32m    let body: unknown;[m
+[32m+[m[32m    try {[m
+[32m+[m[32m      body = JSON.parse(rawBody);[m
+[32m+[m[32m    } catch {[m
+[32m+[m[32m      return NextResponse.json({ explanation: null, error: 'Request body must be valid JSON.' }, { status: 400 });[m
+[32m+[m[32m    }[m
+ [m
+[31m-    if (!body.calculatorType || !body.data) {[m
+[32m+[m[32m    if (!isValidRequest(body)) {[m
+       return NextResponse.json([m
+         { explanation: null, error: 'Invalid request parameters.', timestamp: new Date().toISOString() },[m
+         { status: 400 }[m
+[36m@@ -26,3 +39,25 @@[m [mexport async function POST(req: NextRequest) {[m
+     );[m
+   }[m
+ }[m
+[32m+[m
+[32m+[m[32mfunction isValidRequest(value: unknown): value is AIExplanationRequest {[m
+[32m+[m[32m  if (!value || typeof value !== 'object') return false;[m
+[32m+[m[32m  const request = value as Record<string, unknown>;[m
+[32m+[m[32m  if (!['debt-payoff', 'savings-goal', 'retirement-growth'].includes(String(request.calculatorType))) return false;[m
+[32m+[m[32m  if (request.country !== 'US' && request.country !== 'UK') return false;[m
+[32m+[m[32m  if (!request.data || typeof request.data !== 'object' || Array.isArray(request.data)) return false;[m
+[32m+[m
+[32m+[m[32m  const data = request.data as Record<string, unknown>;[m
+[32m+[m[32m  const allowedKeys: Record<string, string[]> = {[m
+[32m+[m[32m    'debt-payoff': ['snowballMonths', 'snowballDate', 'snowballInterest', 'avalancheMonths', 'avalancheDate', 'avalancheInterest', 'interestSaved', 'monthsSaved'],[m
+[32m+[m[32m    'savings-goal': ['targetAmount', 'currentSavings', 'mode', 'monthlyContribution', 'timeToGoalMonths', 'totalContributions', 'estimatedGrowth', 'annualInterestRate'],[m
+[32m+[m[32m    'retirement-growth': ['currentAge', 'targetRetirementAge', 'yearsToRetirement', 'baseRate', 'baseBalance', 'conservativeRate', 'conservativeBalance', 'optimisticRate', 'optimisticBalance', 'totalContributions'],[m
+[32m+[m[32m  };[m
+[32m+[m[32m  const allowed = allowedKeys[String(request.calculatorType)];[m
+[32m+[m[32m  return allowed.every((key) => key in data) && Object.entries(data).every(([key, item]) => {[m
+[32m+[m[32m    if (!allowed.includes(key)) return false;[m
+[32m+[m[32m    if (key === 'mode') return item === 'MODE_A' || item === 'MODE_B';[m
+[32m+[m[32m    if (key.endsWith('Date')) return typeof item === 'string' && item.length <= 32;[m
+[32m+[m[32m    return typeof item === 'number' && Number.isFinite(item) && Math.abs(item) <= 1_000_000_000_000;[m
+[32m+[m[32m  });[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/app/methodology/page.tsx b/src/app/methodology/page.tsx[m
+[1mindex 808c141..5447b64 100644[m
+[1m--- a/src/app/methodology/page.tsx[m
+[1m+++ b/src/app/methodology/page.tsx[m
+[36m@@ -40,7 +40,7 @@[m [mexport default function MethodologyPage() {[m
+                 Monthly Interest = Balance × (APR / 100 / 12)[m
+               </div>[m
+               <p>[m
+[31m-                Minimum monthly payments are deducted across all active debts first. The user&apos;s available extra monthly payment pool (plus any freed-up minimum payments from previously cleared debts) is allocated according to the chosen strategy:[m
+[32m+[m[32m                The monthly budget is the sum of entered minimum payments plus the extra monthly amount. Minimums are paid first; any remaining budget, including minimums freed as debts are paid off, goes to the next debt in the chosen order:[m
+               </p>[m
+               <ul className="list-disc pl-6 space-y-2">[m
+                 <li>[m
+[36m@@ -51,7 +51,7 @@[m [mexport default function MethodologyPage() {[m
+                 </li>[m
+               </ul>[m
+               <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">[m
+[31m-                <strong>Insufficient Payment Detection:</strong> If minimum payment is less than or equal to monthly interest accrued and zero extra payment is entered, our engine flags an explicit warning banner rather than generating infinite calculations.[m
+[32m+[m[32m                <strong>Payment limits:</strong> The calculator flags minimum payments that do not exceed monthly interest when no extra payment is entered. Each projection is capped at 600 months; if debts remain after that, no payoff date is shown.[m
+               </div>[m
+             </section>[m
+ [m
+[36m@@ -59,7 +59,7 @@[m [mexport default function MethodologyPage() {[m
+             <section className="space-y-4 border-t border-slate-100 pt-6">[m
+               <h2 className="text-2xl font-bold text-slate-900">2. Savings Goal Formulas</h2>[m
+               <p>[m
+[31m-                Savings growth accounts for monthly compounding interest where interest is calculated at the end of each period:[m
+[32m+[m[32m                Savings growth assumes deposits are made at the end of each month and interest compounds monthly. The annual rate is divided by 12:[m
+               </p>[m
+               <div className="p-4 rounded-xl bg-slate-900 text-emerald-300 font-mono text-sm space-y-2">[m
+                 <p>Mode A (Required Deposit): PMT = [T - S₀ × (1 + r)ⁿ] × r / [(1 + r)ⁿ - 1]</p>[m
+[36m@@ -74,7 +74,7 @@[m [mexport default function MethodologyPage() {[m
+             <section className="space-y-4 border-t border-slate-100 pt-6">[m
+               <h2 className="text-2xl font-bold text-slate-900">3. Retirement Scenario Engine</h2>[m
+               <p>[m
+[31m-                Retirement balance projections model annual compound growth with optional annual contribution escalation. Three scenarios are generated automatically:[m
+[32m+[m[32m                Retirement balance projections compound a monthly rate for each month. Contributions increase at the end of each year when an annual escalation is entered. Three scenarios are generated:[m
+               </p>[m
+               <ul className="list-disc pl-6 space-y-1 text-sm">[m
+                 <li><strong>Base Scenario:</strong> User-selected annual growth rate.</li>[m
+[36m@@ -87,7 +87,7 @@[m [mexport default function MethodologyPage() {[m
+             <section className="space-y-4 border-t border-slate-100 pt-6">[m
+               <h2 className="text-2xl font-bold text-slate-900">4. Precision & Limitations</h2>[m
+               <p>[m
+[31m-                Internal calculations use integer cents/pence rounding to prevent floating-point cumulative precision errors.[m
+[32m+[m[32m                Debt payoff interest and payments are rounded to the nearest cent or penny each month. Savings and retirement projections use floating-point values internally and round displayed schedule values to two decimal places. Results are estimates, not lender statements.[m
+               </p>[m
+               <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">[m
+                 <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">[m
+[36m@@ -95,7 +95,7 @@[m [mexport default function MethodologyPage() {[m
+                   <span>Model Assumptions & Limitations</span>[m
+                 </div>[m
+                 <p>[m
+[31m-                  Real-world credit card issuers may calculate interest daily using Daily Periodic Rates (DPR) or charge annual account fees. Savings and investment returns vary over time and are not guaranteed. Tax rates and inflation are excluded from version 1 calculations.[m
+[32m+[m[32m                  Real-world credit card issuers may calculate interest daily or charge fees. Savings and investment returns vary over time and are not guaranteed. Taxes and inflation are excluded. These models do not include fees or account-specific rules.[m
+                 </p>[m
+               </div>[m
+             </section>[m
+[1mdiff --git a/src/app/page.tsx b/src/app/page.tsx[m
+[1mindex 1a63756..d85f913 100644[m
+[1m--- a/src/app/page.tsx[m
+[1m+++ b/src/app/page.tsx[m
+[36m@@ -2,7 +2,6 @@[m
+ [m
+ import React from 'react';[m
+ import Link from 'next/link';[m
+[31m-import { useCountry } from '@/lib/country/context';[m
+ import {[m
+   Calculator,[m
+   PiggyBank,[m
+[36m@@ -17,8 +16,6 @@[m [mimport {[m
+ } from 'lucide-react';[m
+ [m
+ export default function HomePage() {[m
+[31m-  const { country, currencySymbol } = useCountry();[m
+[31m-[m
+   const articles = [[m
+     {[m
+       slug: 'debt-snowball-vs-avalanche',[m
+[36m@@ -81,13 +78,13 @@[m [mexport default function HomePage() {[m
+               {/* Trust Badges */}[m
+               <div className="pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-400 font-medium">[m
+                 <span className="flex items-center gap-1.5">[m
+[31m-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 100% Free & No Sign-Up[m
+[32m+[m[32m                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Free tools · No sign-up[m
+                 </span>[m
+                 <span className="flex items-center gap-1.5">[m
+[31m-                  <Lock className="w-4 h-4 text-emerald-400" /> Privacy-First (No PII Stored)[m
+[32m+[m[32m                  <Lock className="w-4 h-4 text-emerald-400" /> Calculations run in your browser[m
+                 </span>[m
+                 <span className="flex items-center gap-1.5">[m
+[31m-                  <Brain className="w-4 h-4 text-emerald-400" /> Code Does Math, AI Explains[m
+[32m+[m[32m                  <Brain className="w-4 h-4 text-emerald-400" /> AI explanations are optional[m
+                 </span>[m
+               </div>[m
+             </div>[m
+[36m@@ -101,35 +98,35 @@[m [mexport default function HomePage() {[m
+                     <div className="w-3 h-3 rounded-full bg-amber-500"></div>[m
+                     <div className="w-3 h-3 rounded-full bg-emerald-500"></div>[m
+                   </div>[m
+[31m-                  <span className="text-xs font-mono text-slate-400">moneypathai.vercel.app/demo</span>[m
+[32m+[m[32m                  <span className="text-xs font-mono text-slate-400">Illustrative example · Not a live result</span>[m
+                 </div>[m
+ [m
+                 <div className="space-y-3">[m
+                   <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-700 flex justify-between items-center">[m
+                     <div>[m
+[31m-                      <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">Avalanche Payoff</p>[m
+[31m-                      <p className="text-xl font-bold text-white mt-0.5">March 2028</p>[m
+[32m+[m[32m                      <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">Debt payoff estimate</p>[m
+[32m+[m[32m                      <p className="text-xl font-bold text-white mt-0.5">Compare two approaches</p>[m
+                     </div>[m
+                     <div className="text-right">[m
+[31m-                      <p className="text-xs text-slate-400">Interest Saved</p>[m
+[31m-                      <p className="text-lg font-bold text-emerald-400">{currencySymbol}1,480</p>[m
+[32m+[m[32m                      <p className="text-xs text-slate-400">Avalanche</p>[m
+[32m+[m[32m                      <p className="text-lg font-bold text-emerald-400">Highest APR first</p>[m
+                     </div>[m
+                   </div>[m
+ [m
+                   <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-700 flex justify-between items-center">[m
+                     <div>[m
+[31m-                      <p className="text-xs font-bold uppercase tracking-wider text-blue-400">Snowball Payoff</p>[m
+[31m-                      <p className="text-xl font-bold text-white mt-0.5">July 2028</p>[m
+[32m+[m[32m                      <p className="text-xs font-bold uppercase tracking-wider text-blue-400">Snowball</p>[m
+[32m+[m[32m                      <p className="text-xl font-bold text-white mt-0.5">Smallest balance first</p>[m
+                     </div>[m
+                     <div className="text-right">[m
+[31m-                      <p className="text-xs text-slate-400">Quick Wins</p>[m
+[31m-                      <p className="text-sm font-semibold text-slate-300">Small debt paid in 3 mo</p>[m
+[32m+[m[32m                      <p className="text-xs text-slate-400">Compare</p>[m
+[32m+[m[32m                      <p className="text-sm font-semibold text-slate-300">Interest and payoff time</p>[m
+                     </div>[m
+                   </div>[m
+ [m
+                   <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/50 text-xs text-emerald-300 flex items-center gap-2">[m
+                     <Sparkles className="w-4 h-4 shrink-0 text-emerald-400" />[m
+[31m-                    <span>AI Insights: Avalanche minimizes total interest paid across high APR credit accounts.</span>[m
+[32m+[m[32m                    <span>See the estimate, payment assumptions, and limitations together.</span>[m
+                   </div>[m
+                 </div>[m
+               </div>[m
+[36m@@ -223,9 +220,9 @@[m [mexport default function HomePage() {[m
+           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">[m
+             <div className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-3">[m
+               <Zap className="w-6 h-6 text-emerald-400" />[m
+[31m-              <h3 className="text-base font-bold">100% Deterministic Math</h3>[m
+[32m+[m[32m              <h3 className="text-base font-bold">Deterministic Calculations</h3>[m
+               <p className="text-xs text-slate-400 leading-relaxed">[m
+[31m-                Calculators run on tested TypeScript amortization algorithms. An LLM never calculates financial math.[m
+[32m+[m[32m                Calculations use explicit formulas in the application code. An AI model does not calculate balances or payoff schedules.[m
+               </p>[m
+             </div>[m
+ [m
+[36m@@ -241,7 +238,7 @@[m [mexport default function HomePage() {[m
+               <Lock className="w-6 h-6 text-blue-400" />[m
+               <h3 className="text-base font-bold">Privacy-First Architecture</h3>[m
+               <p className="text-xs text-slate-400 leading-relaxed">[m
+[31m-                Your data stays in your browser. We never collect account numbers, SSNs, or store personal debt records.[m
+[32m+[m[32m                Calculator inputs stay in your browser unless you request an explanation. Review our privacy policy for what that request sends.[m
+               </p>[m
+             </div>[m
+ [m
+[1mdiff --git a/src/app/privacy-policy/page.tsx b/src/app/privacy-policy/page.tsx[m
+[1mindex d11178c..53cd67a 100644[m
+[1m--- a/src/app/privacy-policy/page.tsx[m
+[1m+++ b/src/app/privacy-policy/page.tsx[m
+[36m@@ -4,7 +4,7 @@[m [mimport { createPageMetadata } from '@/lib/seo';[m
+ [m
+ export const metadata = createPageMetadata([m
+   'Privacy Policy — MoneyPath AI',[m
+[31m-  'MoneyPath AI privacy policy detailing zero client financial data storage, local browser calculations, and AI privacy protections.',[m
+[32m+[m[32m  'How MoneyPath processes calculator inputs, optional AI explanation requests, and local market preferences.',[m
+   '/privacy-policy'[m
+ );[m
+ [m
+[36m@@ -21,30 +21,30 @@[m [mexport default function PrivacyPolicyPage() {[m
+ [m
+           <div className="prose prose-slate max-w-none space-y-6 text-slate-800 leading-relaxed text-base">[m
+             <section className="space-y-2">[m
+[31m-              <h2 className="text-xl font-bold text-slate-900">1. Zero Financial Data Persistence</h2>[m
+[32m+[m[32m              <h2 className="text-xl font-bold text-slate-900">1. Calculator inputs</h2>[m
+               <p>[m
+[31m-                MoneyPath AI is designed from the ground up to respect user privacy. All inputs entered into our calculators (debt balances, APRs, savings amounts, retirement balances) are processed dynamically in your web browser. <strong>We do not save, store, or transmit your financial inputs to any persistent database.</strong>[m
+[32m+[m[32m                Calculator math runs in your browser. Calculator inputs are not sent to our server unless you request an optional explanation. This site does not provide a user account or a feature to save calculator scenarios.[m
+               </p>[m
+             </section>[m
+ [m
+             <section className="space-y-2 border-t border-slate-100 pt-4">[m
+               <h2 className="text-xl font-bold text-slate-900">2. No Personally Identifiable Information (PII)</h2>[m
+               <p>[m
+[31m-                We do not ask for or collect names, Social Security Numbers, National Insurance Numbers, bank account numbers, credit card numbers, or home addresses.[m
+[32m+[m[32m                The calculators do not ask for names, Social Security Numbers, National Insurance Numbers, bank account numbers, or home addresses. Do not enter identifying details in debt names or other free-text fields.[m
+               </p>[m
+             </section>[m
+ [m
+             <section className="space-y-2 border-t border-slate-100 pt-4">[m
+               <h2 className="text-xl font-bold text-slate-900">3. AI Feature Data Handling</h2>[m
+               <p>[m
+[31m-                If you voluntarily click the optional &quot;Explain My Results&quot; button, only minimum non-identifiable numeric scenario outputs (e.g., payoff months count, calculated interest difference) are sent to our server API route for plain-language interpretation. No personal identity data is ever attached or transmitted.[m
+[32m+[m[32m                If you click &quot;Explain My Results&quot;, the displayed result figures and selected country are sent to this site&apos;s server. For savings and retirement scenarios, this includes entered amounts such as current savings and target amounts; debt account names and identifiers are not sent. If AI explanations are enabled by the site operator, the server sends the scenario figures to OpenAI to generate a response. Do not request an explanation if you do not want those figures processed this way. AI explanations are disabled unless the operator explicitly enables and configures them.[m
+               </p>[m
+             </section>[m
+ [m
+             <section className="space-y-2 border-t border-slate-100 pt-4">[m
+               <h2 className="text-xl font-bold text-slate-900">4. Local Browser Storage</h2>[m
+               <p>[m
+[31m-                We may store minor preference settings (such as your chosen market currency preference US $ or UK £) in your browser&apos;s <code className="bg-slate-100 px-1 py-0.5 rounded">localStorage</code> for convenience. You can clear this storage at any time via browser settings.[m
+[32m+[m[32m                The selected US or UK market preference is stored in your browser&apos;s <code className="bg-slate-100 px-1 py-0.5 rounded">localStorage</code>. You can remove it through your browser settings.[m
+               </p>[m
+             </section>[m
+           </div>[m
+[1mdiff --git a/src/app/tools/debt-payoff-calculator/page.tsx b/src/app/tools/debt-payoff-calculator/page.tsx[m
+[1mindex 4410a95..70fa471 100644[m
+[1m--- a/src/app/tools/debt-payoff-calculator/page.tsx[m
+[1m+++ b/src/app/tools/debt-payoff-calculator/page.tsx[m
+[36m@@ -65,6 +65,8 @@[m [mexport default function DebtPayoffCalculatorPage() {[m
+ [m
+   const activeStrategyResult =[m
+     selectedStrategyTab === 'avalanche' ? comparison.avalanche : comparison.snowball;[m
+[32m+[m[32m  const minimumPaymentTotal = debts.reduce((total, debt) => total + (debt.balance > 0 ? Math.max(0, debt.minPayment) : 0), 0);[m
+[32m+[m[32m  const monthlyBudget = minimumPaymentTotal + Math.max(0, extraPayment);[m
+ [m
+   // Chart data formatting[m
+   const chartData = useMemo(() => {[m
+[36m@@ -90,8 +92,8 @@[m [mexport default function DebtPayoffCalculatorPage() {[m
+ [m
+   const copySummaryText = () => {[m
+     const text = `MoneyPath AI Debt Payoff Estimate (${country}):[m
+[31m-Avalanche Strategy: Debt-free in ${formatDuration(comparison.avalanche.monthsToPayoff)} (${comparison.avalanche.payoffDate}), Total Interest: ${formatCurrency(comparison.avalanche.totalInterestPaid, country)}[m
+[31m-Snowball Strategy: Debt-free in ${formatDuration(comparison.snowball.monthsToPayoff)} (${comparison.snowball.payoffDate}), Total Interest: ${formatCurrency(comparison.snowball.totalInterestPaid, country)}[m
+[32m+[m[32mAvalanche Strategy: ${comparison.avalanche.paidOff ? `Debt-free in ${formatDuration(comparison.avalanche.monthsToPayoff)} (${comparison.avalanche.payoffDate})` : 'Not paid off within 50 years'}, Total Interest: ${formatCurrency(comparison.avalanche.totalInterestPaid, country)}[m
+[32m+[m[32mSnowball Strategy: ${comparison.snowball.paidOff ? `Debt-free in ${formatDuration(comparison.snowball.monthsToPayoff)} (${comparison.snowball.payoffDate})` : 'Not paid off within 50 years'}, Total Interest: ${formatCurrency(comparison.snowball.totalInterestPaid, country)}[m
+ Estimated Avalanche Interest Saved: ${formatCurrency(comparison.interestDifference, country)}[m
+ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;[m
+ [m
+[36m@@ -107,7 +109,7 @@[m [mCalculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;[m
+   return ([m
+     <CalculatorLayout[m
+       title="Debt Payoff Planner"[m
+[31m-      subtitle="Compare Debt Snowball vs Debt Avalanche strategies to find your fastest path to becoming debt-free."[m
+[32m+[m[32m      subtitle="Compare two common payoff approaches using your balances, rates, and monthly payment budget."[m
+       breadcrumbs={[[m
+         { label: 'Calculators', href: '/#calculators' },[m
+         { label: 'Debt Payoff Planner' },[m
+[36m@@ -115,13 +117,13 @@[m [mCalculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;[m
+       inputsPanel={[m
+         <div className="space-y-6">[m
+           <div className="flex items-center justify-between border-b border-slate-100 pb-3">[m
+[31m-            <h2 className="text-lg font-bold text-slate-900">Your Debts</h2>[m
+[32m+[m[32m            <h2 className="text-base font-bold text-slate-900">Your debts & monthly budget</h2>[m
+             <div className="flex gap-2">[m
+               <button[m
+                 onClick={loadExample}[m
+                 className="text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg transition-colors"[m
+               >[m
+[31m-                Load Example Data[m
+[32m+[m[32m                Reset example[m
+               </button>[m
+               <button[m
+                 onClick={resetAll}[m
+[36m@@ -173,7 +175,7 @@[m [mCalculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;[m
+                   />[m
+                   <CurrencyInput[m
+                     id={`min_${debt.id}`}[m
+[31m-                    label="Min Payment"[m
+[32m+[m[32m                    label="Minimum"[m
+                     value={debt.minPayment}[m
+                     onChange={(val) => updateDebt(debt.id, 'minPayment', val)}[m
+                   />[m
+[36m@@ -192,16 +194,24 @@[m [mCalculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;[m
+           <div className="pt-4 border-t border-slate-200">[m
+             <CurrencyInput[m
+               id="extra_payment"[m
+[31m-              label="Extra Monthly Payment Available"[m
+[32m+[m[32m              label="Extra available each month"[m
+               value={extraPayment}[m
+               onChange={setExtraPayment}[m
+[31m-              helpText="Additional money paid each month on top of all minimum payments."[m
+[32m+[m[32m              helpText="In addition to minimum payments. Paid-off minimums roll into the next debt."[m
+             />[m
+[32m+[m[32m            <div className="flex justify-between border-t border-slate-200 pt-4 text-sm">[m
+[32m+[m[32m              <span className="text-slate-600">Estimated total monthly budget</span>[m
+[32m+[m[32m              <strong className="text-slate-900">{formatCurrency(monthlyBudget, country)}</strong>[m
+[32m+[m[32m            </div>[m
+           </div>[m
+         </div>[m
+       }[m
+       resultsPanel={[m
+[31m-        <div className="space-y-6">[m
+[32m+[m[32m        <div className="space-y-5">[m
+[32m+[m[32m          <div className="flex items-center justify-between gap-3">[m
+[32m+[m[32m            <h2 className="text-lg font-bold text-slate-900">Your estimated comparison</h2>[m
+[32m+[m[32m            <span className="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-800">Estimate, not a guarantee</span>[m
+[32m+[m[32m          </div>[m
+           {/* Warnings Banner if payments insufficient */}[m
+           {comparison.warnings.length > 0 && ([m
+             <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs space-y-1">[m
+[36m@@ -215,31 +225,44 @@[m [mCalculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;[m
+             </div>[m
+           )}[m
+ [m
+[32m+[m[32m          {(!comparison.avalanche.paidOff || !comparison.snowball.paidOff) && ([m
+[32m+[m[32m            <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs" role="status">[m
+[32m+[m[32m              <strong className="block mb-1">A payoff date could not be estimated</strong>[m
+[32m+[m[32m              At least one strategy did not clear all debts within the 50-year projection limit. Review your payment amounts and interest rates.[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m          )}[m
+[32m+[m
+           {/* Strategy Comparison Side-by-Side */}[m
+[31m-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">[m
+[32m+[m[32m          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">[m
+             <ComparisonCard[m
+               title="Debt Avalanche"[m
+               badgeText="Highest APR First"[m
+[31m-              payoffDate={comparison.avalanche.payoffDate}[m
+[31m-              monthsToPayoff={formatDuration(comparison.avalanche.monthsToPayoff)}[m
+[32m+[m[32m              payoffDate={comparison.avalanche.paidOff ? comparison.avalanche.payoffDate : 'Not reached'}[m
+[32m+[m[32m              monthsToPayoff={comparison.avalanche.paidOff ? formatDuration(comparison.avalanche.monthsToPayoff) : 'Not reached'}[m
+               totalInterest={formatCurrency(comparison.avalanche.totalInterestPaid, country)}[m
+               totalAmountPaid={formatCurrency(comparison.avalanche.totalAmountPaid, country)}[m
+[31m-              isHighlighted={comparison.recommendedByMath === 'avalanche'}[m
+[31m-              highlightText="Saves Most Interest"[m
+[32m+[m[32m              isHighlighted={comparison.avalanche.paidOff && comparison.snowball.paidOff && comparison.recommendedByMath === 'avalanche'}[m
+[32m+[m[32m              highlightText="Lower interest"[m
+             />[m
+ [m
+             <ComparisonCard[m
+               title="Debt Snowball"[m
+               badgeText="Smallest Balance First"[m
+[31m-              payoffDate={comparison.snowball.payoffDate}[m
+[31m-              monthsToPayoff={formatDuration(comparison.snowball.monthsToPayoff)}[m
+[32m+[m[32m              payoffDate={comparison.snowball.paidOff ? comparison.snowball.payoffDate : 'Not reached'}[m
+[32m+[m[32m              monthsToPayoff={comparison.snowball.paidOff ? formatDuration(comparison.snowball.monthsToPayoff) : 'Not reached'}[m
+               totalInterest={formatCurrency(comparison.snowball.totalInterestPaid, country)}[m
+               totalAmountPaid={formatCurrency(comparison.snowball.totalAmountPaid, country)}[m
+[31m-              isHighlighted={comparison.recommendedByMath === 'snowball'}[m
+[31m-              highlightText="Quickest Wins"[m
+[32m+[m[32m              isHighlighted={comparison.avalanche.paidOff && comparison.snowball.paidOff && comparison.recommendedByMath === 'snowball'}[m
+[32m+[m[32m              highlightText="Lower interest"[m
+             />[m
+           </div>[m
+ [m
+[32m+[m[32m          <div className="p-4 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-700 space-y-1.5">[m
+[32m+[m[32m            <strong className="text-sm text-slate-900">What this estimate assumes</strong>[m
+[32m+[m[32m            <p>Interest is approximated monthly using APR ÷ 12. Your total monthly budget stays constant, and freed minimum payments roll to the next debt.</p>[m
+[32m+[m[32m            <p className="text-slate-500">Fees, promotional rates, and lender-specific daily interest rules are not included.</p>[m
+[32m+[m[32m          </div>[m
+[32m+[m
+           {/* Key Delta Outcome Card */}[m
+           <div className="p-5 rounded-2xl bg-emerald-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">[m
+             <div>[m
+[36m@@ -247,14 +270,18 @@[m [mCalculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;[m
+                 Mathematical Comparison Difference[m
+               </p>[m
+               <h3 className="text-2xl font-bold text-white mt-1">[m
+[31m-                {comparison.interestDifference > 0 ? ([m
+[32m+[m[32m                {!comparison.avalanche.paidOff || !comparison.snowball.paidOff ? ([m
+[32m+[m[32m                  <>Interest accrued during the projection window</>[m
+[32m+[m[32m                ) : comparison.interestDifference > 0 ? ([m
+                   <>Avalanche saves {formatCurrency(comparison.interestDifference, country)} in interest</>[m
+                 ) : ([m
+                   <>Both strategies yield identical interest cost</>[m
+                 )}[m
+               </h3>[m
+               <p className="text-xs text-emerald-200 mt-1">[m
+[31m-                {comparison.monthsDifference > 0[m
+[32m+[m[32m                {!comparison.avalanche.paidOff || !comparison.snowball.paidOff[m
+[32m+[m[32m                  ? 'Interest totals are limited to the 50-year projection window because at least one strategy did not reach debt-free.'[m
+[32m+[m[32m                  : comparison.monthsDifference > 0[m
+                   ? `Avalanche achieves debt freedom ${comparison.monthsDifference} months faster.`[m
+                   : comparison.monthsDifference < 0[m
+                   ? `Snowball achieves debt freedom ${Math.abs(comparison.monthsDifference)} months faster.`[m
+[36m@@ -326,7 +353,7 @@[m [mCalculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;[m
+                       <td className="py-3 text-slate-700">{formatCurrency(detail.initialBalance, country)}</td>[m
+                       <td className="py-3 text-slate-700">{detail.apr}%</td>[m
+                       <td className="py-3 font-medium text-emerald-700">[m
+[31m-                        {formatDuration(detail.monthsToPayoff)}[m
+[32m+[m[32m                        {detail.paidOff ? formatDuration(detail.monthsToPayoff) : 'Not reached'}[m
+                       </td>[m
+                       <td className="py-3 text-slate-700">{formatCurrency(detail.totalInterestPaid, country)}</td>[m
+                       <td className="py-3 font-semibold text-slate-900">[m
+[36m@@ -364,7 +391,7 @@[m [mCalculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;[m
+             <span>How This Debt Calculation Works</span>[m
+           </div>[m
+           <p>[m
+[31m-            Calculations convert APR to a monthly periodic interest rate applied to outstanding balance. Minimum payments are applied to active debts first; remaining extra funds are rolled into prioritized debts according to the selected strategy.[m
+[32m+[m[32m            Calculations convert APR to an estimated monthly periodic rate applied to the outstanding balance. The entered total monthly budget is held constant: minimum payments are covered first, and any remaining budget—including minimums freed as debts are cleared—is directed by the selected strategy.[m
+           </p>[m
+           <Link href="/methodology" className="inline-block text-emerald-700 font-semibold hover:underline">[m
+             Read full calculation methodology & assumptions →[m
+[1mdiff --git a/src/app/tools/retirement-calculator/page.tsx b/src/app/tools/retirement-calculator/page.tsx[m
+[1mindex 48270e7..b806e3e 100644[m
+[1m--- a/src/app/tools/retirement-calculator/page.tsx[m
+[1m+++ b/src/app/tools/retirement-calculator/page.tsx[m
+[36m@@ -74,7 +74,7 @@[m [mYears to Retirement: ${result.yearsToRetirement} years (Retiring at Age ${target[m
+ Base Growth Scenario (${result.baseScenario.growthRate}%): ${formatCurrency(result.baseScenario.projectedBalance, country)}[m
+ Conservative Scenario (${result.conservativeScenario.growthRate}%): ${formatCurrency(result.conservativeScenario.projectedBalance, country)}[m
+ Optimistic Scenario (${result.optimisticScenario.growthRate}%): ${formatCurrency(result.optimisticScenario.projectedBalance, country)}[m
+[31m-Total Personal Contributions: ${formatCurrency(result.baseScenario.totalContributions, country)}[m
+[32m+[m[32mStarting balance + contributions: ${formatCurrency(result.baseScenario.totalContributions, country)}[m
+ Calculated at https://moneypathai.vercel.app/tools/retirement-calculator`;[m
+ [m
+     navigator.clipboard.writeText(text);[m
+[36m@@ -240,9 +240,9 @@[m [mCalculated at https://moneypathai.vercel.app/tools/retirement-calculator`;[m
+ [m
+           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">[m
+             <ResultCard[m
+[31m-              label="Total Personal Contributions"[m
+[32m+[m[32m              label="Starting Balance + Contributions"[m
+               value={formatCurrency(activeOutcome.totalContributions, country)}[m
+[31m-              subtext="Principal invested over time"[m
+[32m+[m[32m              subtext="Includes your current savings"[m
+               variant="neutral"[m
+             />[m
+             <ResultCard[m
+[1mdiff --git a/src/app/tools/savings-goal-calculator/page.tsx b/src/app/tools/savings-goal-calculator/page.tsx[m
+[1mindex 0fc9e36..03f814c 100644[m
+[1m--- a/src/app/tools/savings-goal-calculator/page.tsx[m
+[1m+++ b/src/app/tools/savings-goal-calculator/page.tsx[m
+[36m@@ -180,12 +180,14 @@[m [mCalculated at https://moneypathai.vercel.app/tools/savings-goal-calculator`;[m
+               value={[m
+                 mode === 'MODE_A'[m
+                   ? formatCurrency(result.requiredMonthlyContribution, country)[m
+[31m-                  : formatDuration(result.timeToGoalMonths)[m
+[32m+[m[32m                  : result.goalReached ? formatDuration(result.timeToGoalMonths) : 'Not reached'[m
+               }[m
+               subtext={[m
+                 mode === 'MODE_A'[m
+                   ? `To reach ${formatCurrency(result.targetAmount, country)} in ${formatDuration(result.timeToGoalMonths)}`[m
+[31m-                  : `With ${formatCurrency(result.requiredMonthlyContribution, country)} monthly deposit`[m
+[32m+[m[32m                  : result.goalReached[m
+[32m+[m[32m                    ? `With ${formatCurrency(result.requiredMonthlyContribution, country)} monthly deposit`[m
+[32m+[m[32m                    : 'At this rate, the goal was not reached within 50 years'[m
+               }[m
+               variant="primary"[m
+               icon={<Target className="w-5 h-5 text-emerald-300" />}[m
+[36m@@ -200,6 +202,13 @@[m [mCalculated at https://moneypathai.vercel.app/tools/savings-goal-calculator`;[m
+             />[m
+           </div>[m
+ [m
+[32m+[m[32m          {!result.goalReached && mode === 'MODE_B' && ([m
+[32m+[m[32m            <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs" role="status">[m
+[32m+[m[32m              <strong className="block mb-1">Goal not reached within 50 years</strong>[m
+[32m+[m[32m              Increase your monthly contribution or review the target and assumed rate. This projection stops after 600 months.[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m          )}[m
+[32m+[m
+           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">[m
+             <ResultCard[m
+               label="Your Personal Contributions"[m
+[36m@@ -261,9 +270,7 @@[m [mCalculated at https://moneypathai.vercel.app/tools/savings-goal-calculator`;[m
+             <Info className="w-4 h-4 text-emerald-600" />[m
+             <span>Hypothetical Calculation Notice</span>[m
+           </div>[m
+[31m-          <p>[m
+[31m-            Savings growth assumes interest compounds at the end of each monthly period. Rates of return are hypothetical estimates and do not guarantee future earnings or protect against market risks.[m
+[31m-          </p>[m
+[32m+[m[32m            <p>Savings growth assumes contributions are deposited at the end of each month and interest compounds monthly. The model uses an annual rate divided by 12, excludes fees, taxes, and inflation, and does not guarantee future returns.</p>[m
+           <Link href="/methodology" className="inline-block text-emerald-700 font-semibold hover:underline">[m
+             Read savings compound interest methodology →[m
+           </Link>[m
+[1mdiff --git a/src/components/ui/AIExplanationBox.tsx b/src/components/ui/AIExplanationBox.tsx[m
+[1mindex e615681..d912bcd 100644[m
+[1m--- a/src/components/ui/AIExplanationBox.tsx[m
+[1m+++ b/src/components/ui/AIExplanationBox.tsx[m
+[36m@@ -1,6 +1,6 @@[m
+ 'use client';[m
+ [m
+[31m-import React, { useState } from 'react';[m
+[32m+[m[32mimport React, { useEffect, useState } from 'react';[m
+ import { useCountry } from '@/lib/country/context';[m
+ import { Sparkles, AlertCircle, RefreshCw } from 'lucide-react';[m
+ [m
+[36m@@ -15,6 +15,16 @@[m [mexport function AIExplanationBox({ calculatorType, data }: AIExplanationBoxProps[m
+   const [explanation, setExplanation] = useState<string | null>(null);[m
+   const [error, setError] = useState<string | null>(null);[m
+   const [hasRequested, setHasRequested] = useState(false);[m
+[32m+[m[32m  const [enabled, setEnabled] = useState(false);[m
+[32m+[m
+[32m+[m[32m  useEffect(() => {[m
+[32m+[m[32m    let active = true;[m
+[32m+[m[32m    fetch('/api/explain')[m
+[32m+[m[32m      .then((res) => res.json())[m
+[32m+[m[32m      .then((status) => { if (active) setEnabled(status.enabled === true); })[m
+[32m+[m[32m      .catch(() => { if (active) setEnabled(false); });[m
+[32m+[m[32m    return () => { active = false; };[m
+[32m+[m[32m  }, []);[m
+ [m
+   const fetchExplanation = async () => {[m
+     setLoading(true);[m
+[36m@@ -45,6 +55,8 @@[m [mexport function AIExplanationBox({ calculatorType, data }: AIExplanationBoxProps[m
+     }[m
+   };[m
+ [m
+[32m+[m[32m  if (!enabled) return null;[m
+[32m+[m
+   return ([m
+     <div className="w-full bg-slate-900 text-white p-6 rounded-2xl shadow-md border border-slate-800 space-y-4">[m
+       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">[m
+[36m@@ -55,7 +67,10 @@[m [mexport function AIExplanationBox({ calculatorType, data }: AIExplanationBoxProps[m
+           </div>[m
+           <h3 className="text-lg font-bold text-white mt-1">Want a Plain-Language Explanation?</h3>[m
+           <p className="text-xs text-slate-400">[m
+[31m-            The calculator handled the math. AI can translate what these numbers mean for your options.[m
+[32m+[m[32m            The calculator handled the math. If enabled, an AI service can explain the calculated results in plain language.[m
+[32m+[m[32m          </p>[m
+[32m+[m[32m          <p className="text-[11px] text-slate-500 mt-1">[m
+[32m+[m[32m            Clicking Explain sends the figures shown above and selected country to this site&apos;s server. When AI is enabled, those figures are sent to OpenAI for a response. Debt account names and identifiers are excluded; savings and retirement amounts may be included.[m
+           </p>[m
+         </div>[m
+ [m
+[36m@@ -81,7 +96,7 @@[m [mexport function AIExplanationBox({ calculatorType, data }: AIExplanationBoxProps[m
+       {explanation && ([m
+         <div className="pt-3 border-t border-slate-800 space-y-3">[m
+           <div className="inline-block px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-emerald-950 text-emerald-300 border border-emerald-800">[m
+[31m-            AI-generated explanation[m
+[32m+[m[32m            Explanation[m
+           </div>[m
+           <div className="text-sm leading-relaxed text-slate-200 space-y-2 whitespace-pre-line">[m
+             {explanation}[m
+[1mdiff --git a/src/components/ui/CalculatorLayout.tsx b/src/components/ui/CalculatorLayout.tsx[m
+[1mindex 6296af8..f9ca0b9 100644[m
+[1m--- a/src/components/ui/CalculatorLayout.tsx[m
+[1m+++ b/src/components/ui/CalculatorLayout.tsx[m
+[36m@@ -29,7 +29,8 @@[m [mexport function CalculatorLayout({[m
+     <div className="min-h-screen bg-slate-50 text-slate-900 pb-16">[m
+       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">[m
+         {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}[m
+[31m-        <div className="mb-8">[m
+[32m+[m[32m        <div className="mb-7">[m
+[32m+[m[32m          <p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">Financial calculator</p>[m
+           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">[m
+             {title}[m
+           </h1>[m
+[36m@@ -38,14 +39,14 @@[m [mexport function CalculatorLayout({[m
+           </p>[m
+         </div>[m
+ [m
+[31m-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">[m
+[32m+[m[32m        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">[m
+           {/* Inputs Panel */}[m
+[31m-          <div className="lg:col-span-5 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-sm space-y-6">[m
+[32m+[m[32m          <div className="lg:col-span-4 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">[m
+             {inputsPanel}[m
+           </div>[m
+ [m
+           {/* Results Panel */}[m
+[31m-          <div className="lg:col-span-7 space-y-6">[m
+[32m+[m[32m          <div className="lg:col-span-8 space-y-5">[m
+             {resultsPanel}[m
+           </div>[m
+         </div>[m
+[1mdiff --git a/src/components/ui/ResultCard.tsx b/src/components/ui/ResultCard.tsx[m
+[1mindex f0c7208..a61dfe0 100644[m
+[1m--- a/src/components/ui/ResultCard.tsx[m
+[1m+++ b/src/components/ui/ResultCard.tsx[m
+[36m@@ -85,44 +85,23 @@[m [mexport function ComparisonCard({[m
+ }: ComparisonCardProps) {[m
+   return ([m
+     <div[m
+[31m-      className={`p-6 rounded-2xl border transition-all ${[m
+[32m+[m[32m      className={`p-5 rounded-2xl border transition-all ${[m
+         isHighlighted[m
+[31m-          ? 'border-emerald-600 bg-emerald-50/40 shadow-md ring-2 ring-emerald-600/20'[m
+[32m+[m[32m          ? 'border-emerald-500 bg-gradient-to-br from-white to-emerald-50 shadow-sm ring-1 ring-emerald-500/30'[m
+           : 'border-slate-200 bg-white shadow-sm hover:border-slate-300'[m
+       }`}[m
+     >[m
+[31m-      <div className="flex items-center justify-between mb-4">[m
+[31m-        <div>[m
+[31m-          <span className="inline-block px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-700">[m
+[31m-            {badgeText}[m
+[31m-          </span>[m
+[31m-          <h3 className="text-xl font-bold text-slate-900 mt-1">{title}</h3>[m
+[31m-        </div>[m
+[31m-        {isHighlighted && highlightText && ([m
+[31m-          <span className="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">[m
+[31m-            {highlightText}[m
+[31m-          </span>[m
+[31m-        )}[m
+[32m+[m[32m      <div className="flex items-start justify-between gap-2">[m
+[32m+[m[32m        <div className="text-xs font-bold uppercase tracking-wide text-slate-500">{title} · {badgeText}</div>[m
+[32m+[m[32m        {isHighlighted && highlightText && <span className="shrink-0 rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-800">{highlightText}</span>}[m
+       </div>[m
+[31m-[m
+[31m-      <div className="space-y-3 pt-2">[m
+[31m-        <div className="flex justify-between items-baseline border-b border-slate-100 pb-2">[m
+[31m-          <span className="text-sm text-slate-600 font-medium">Debt-Free Date</span>[m
+[31m-          <span className="text-lg font-bold text-slate-900">{payoffDate}</span>[m
+[31m-        </div>[m
+[31m-        <div className="flex justify-between items-baseline border-b border-slate-100 pb-2">[m
+[31m-          <span className="text-sm text-slate-600 font-medium">Total Time</span>[m
+[31m-          <span className="text-base font-semibold text-slate-800">{monthsToPayoff}</span>[m
+[31m-        </div>[m
+[31m-        <div className="flex justify-between items-baseline border-b border-slate-100 pb-2">[m
+[31m-          <span className="text-sm text-slate-600 font-medium">Total Interest</span>[m
+[31m-          <span className="text-lg font-bold text-emerald-700">{totalInterest}</span>[m
+[31m-        </div>[m
+[31m-        <div className="flex justify-between items-baseline">[m
+[31m-          <span className="text-sm text-slate-600 font-medium">Total Paid</span>[m
+[31m-          <span className="text-base font-semibold text-slate-800">{totalAmountPaid}</span>[m
+[31m-        </div>[m
+[32m+[m[32m      <p className="mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">{monthsToPayoff}</p>[m
+[32m+[m[32m      <p className="text-xs text-slate-500">Estimated time to debt-free</p>[m
+[32m+[m[32m      <div className="grid grid-cols-2 gap-2 mt-4">[m
+[32m+[m[32m        <div className="rounded-lg bg-slate-50 p-3"><p className="text-[11px] text-slate-500">Total interest</p><p className="mt-1 text-sm font-bold text-slate-900">{totalInterest}</p></div>[m
+[32m+[m[32m        <div className="rounded-lg bg-slate-50 p-3"><p className="text-[11px] text-slate-500">Debt-free around</p><p className="mt-1 text-sm font-bold text-slate-900">{payoffDate}</p></div>[m
+       </div>[m
+[32m+[m[32m      <p className="sr-only">Total estimated amount paid: {totalAmountPaid}</p>[m
+     </div>[m
+   );[m
+ }[m
+[1mdiff --git a/src/lib/ai/explanation.ts b/src/lib/ai/explanation.ts[m
+[1mindex 46f1d2a..85add94 100644[m
+[1m--- a/src/lib/ai/explanation.ts[m
+[1m+++ b/src/lib/ai/explanation.ts[m
+[36m@@ -3,11 +3,19 @@[m [mimport { AIExplanationRequest, AIExplanationResponse } from '@/types/financial';[m
+ export async function generateFinancialExplanation([m
+   req: AIExplanationRequest[m
+ ): Promise<AIExplanationResponse> {[m
+[31m-  const aiEnabled = process.env.AI_ENABLED !== 'false'; // Enabled by default or via fallback[m
+[31m-  const apiKey = process.env.OPENAI_API_KEY || process.env.GEMINI_API_KEY;[m
+[32m+[m[32m  const aiEnabled = process.env.AI_ENABLED === 'true';[m
+[32m+[m[32m  const apiKey = process.env.OPENAI_API_KEY;[m
+ [m
+   const timestamp = new Date().toISOString();[m
+ [m
+[32m+[m[32m  if (!aiEnabled) {[m
+[32m+[m[32m    return { explanation: null, error: 'AI explanations are currently disabled. Your calculator results are still available above.', timestamp };[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  if (!apiKey) {[m
+[32m+[m[32m    return { explanation: null, error: 'AI explanations are not configured. Your calculator results are still available above.', timestamp };[m
+[32m+[m[32m  }[m
+[32m+[m
+   // If live API key is present, attempt live LLM request[m
+   if (apiKey) {[m
+     try {[m
+[36m@@ -56,13 +64,7 @@[m [mSTRICT MANDATES:[m
+     }[m
+   }[m
+ [m
+[31m-  // Smart Educational Explanation Engine (Fallback when no API key configured)[m
+[31m-  const explanation = buildSmartEducationalExplanation(req);[m
+[31m-  return {[m
+[31m-    explanation,[m
+[31m-    error: null,[m
+[31m-    timestamp,[m
+[31m-  };[m
+[32m+[m[32m  return { explanation: null, error: 'The AI explanation service is unavailable. Your calculator results are still available above.', timestamp };[m
+ }[m
+ [m
+ function buildSmartEducationalExplanation(req: AIExplanationRequest): string {[m
+[1mdiff --git a/src/lib/financial/debtEngine.ts b/src/lib/financial/debtEngine.ts[m
+[1mindex 85df3c0..b2fb114 100644[m
+[1m--- a/src/lib/financial/debtEngine.ts[m
+[1m+++ b/src/lib/financial/debtEngine.ts[m
+[36m@@ -60,6 +60,7 @@[m [mexport function calculateSingleDebtStrategy([m
+     return {[m
+       strategy,[m
+       monthsToPayoff: 0,[m
+[32m+[m[32m      paidOff: true,[m
+       payoffDate: getFutureDateString(0),[m
+       totalInterestPaid: 0,[m
+       totalAmountPaid: 0,[m
+[36m@@ -84,7 +85,10 @@[m [mexport function calculateSingleDebtStrategy([m
+ [m
+   const schedule: DebtPayoffScheduleMonth[] = [];[m
+   let currentMonth = 0;[m
+[31m-  let accumulatedExtraCents = toCents(Math.max(0, extraMonthlyPayment));[m
+[32m+[m[32m  // Keep the user's total monthly budget constant. Minimum payments freed by[m
+[32m+[m[32m  // paid debts become available to the next prioritized debt automatically.[m
+[32m+[m[32m  const monthlyBudgetCents = validDebts.reduce((sum, debt) => sum + toCents(debt.minPayment), 0)[m
+[32m+[m[32m    + toCents(Math.max(0, extraMonthlyPayment));[m
+ [m
+   while (currentMonth < MAX_PAYOFF_MONTHS) {[m
+     // Check if all debts are paid[m
+[36m@@ -118,7 +122,7 @@[m [mexport function calculateSingleDebtStrategy([m
+     });[m
+ [m
+     // 3. Pay minimum payments across all active debts first[m
+[31m-    let availableExtraThisMonthCents = accumulatedExtraCents;[m
+[32m+[m[32m    let minimumsPaidThisMonthCents = 0;[m
+ [m
+     for (const debt of remainingDebts) {[m
+       if (debt.balanceCents <= 0) continue;[m
+[36m@@ -127,6 +131,7 @@[m [mexport function calculateSingleDebtStrategy([m
+       debt.balanceCents -= minPayment;[m
+       debt.totalPaidCents += minPayment;[m
+       monthPaymentCents += minPayment;[m
+[32m+[m[32m      minimumsPaidThisMonthCents += minPayment;[m
+ [m
+       if (debt.balanceCents === 0 && debt.monthsToPayoff === 0) {[m
+         debt.monthsToPayoff = currentMonth;[m
+[36m@@ -134,6 +139,7 @@[m [mexport function calculateSingleDebtStrategy([m
+     }[m
+ [m
+     // 4. Apply extra payments (and freed up min payments) to prioritized target debt(s)[m
+[32m+[m[32m    let availableExtraThisMonthCents = Math.max(0, monthlyBudgetCents - minimumsPaidThisMonthCents);[m
+     for (const targetDebt of sortedRemaining) {[m
+       if (availableExtraThisMonthCents <= 0) break;[m
+ [m
+[36m@@ -170,6 +176,8 @@[m [mexport function calculateSingleDebtStrategy([m
+     });[m
+   }[m
+ [m
+[32m+[m[32m  const paidOff = activeDebts.every((debt) => debt.balanceCents <= 0);[m
+[32m+[m
+   // Build individual debt detail list[m
+   const debtDetails: SingleDebtPayoffDetail[] = activeDebts.map((d) => ({[m
+     id: d.id,[m
+[36m@@ -177,6 +185,7 @@[m [mexport function calculateSingleDebtStrategy([m
+     initialBalance: fromCents(d.initialBalanceCents),[m
+     apr: d.apr,[m
+     monthsToPayoff: d.monthsToPayoff || currentMonth,[m
+[32m+[m[32m    paidOff: d.balanceCents <= 0,[m
+     totalInterestPaid: fromCents(d.totalInterestCents),[m
+     totalAmountPaid: fromCents(d.totalPaidCents),[m
+   }));[m
+[36m@@ -187,7 +196,8 @@[m [mexport function calculateSingleDebtStrategy([m
+   return {[m
+     strategy,[m
+     monthsToPayoff: currentMonth,[m
+[31m-    payoffDate: getFutureDateString(currentMonth),[m
+[32m+[m[32m    paidOff,[m
+[32m+[m[32m    payoffDate: paidOff ? getFutureDateString(currentMonth) : 'Not reached',[m
+     totalInterestPaid: fromCents(totalInterestCents),[m
+     totalAmountPaid: fromCents(totalAmountPaidCents),[m
+     schedule,[m
+[1mdiff --git a/src/lib/financial/savingsEngine.ts b/src/lib/financial/savingsEngine.ts[m
+[1mindex 1195d9e..36b1488 100644[m
+[1m--- a/src/lib/financial/savingsEngine.ts[m
+[1m+++ b/src/lib/financial/savingsEngine.ts[m
+[36m@@ -59,6 +59,7 @@[m [mexport function calculateSavingsGoal(inputs: SavingsGoalInputs): SavingsGoalResu[m
+       totalUserContributions: Math.round(totalContrib * 100) / 100,[m
+       estimatedGrowthInterest: Math.round(totalInterest * 100) / 100,[m
+       timeToGoalMonths: timeframeMonths,[m
+[32m+[m[32m      goalReached: balance >= targetAmount,[m
+       schedule,[m
+     };[m
+   } else {[m
+[36m@@ -104,6 +105,7 @@[m [mexport function calculateSavingsGoal(inputs: SavingsGoalInputs): SavingsGoalResu[m
+       totalUserContributions: Math.round(totalContrib * 100) / 100,[m
+       estimatedGrowthInterest: Math.round(totalInterest * 100) / 100,[m
+       timeToGoalMonths: months,[m
+[32m+[m[32m      goalReached: balance >= targetAmount,[m
+       schedule,[m
+     };[m
+   }[m
+[1mdiff --git a/src/types/financial.ts b/src/types/financial.ts[m
+[1mindex 8c622d6..b25f280 100644[m
+[1m--- a/src/types/financial.ts[m
+[1m+++ b/src/types/financial.ts[m
+[36m@@ -30,6 +30,7 @@[m [mexport interface SingleDebtPayoffDetail {[m
+   initialBalance: number;[m
+   apr: number;[m
+   monthsToPayoff: number;[m
+[32m+[m[32m  paidOff: boolean;[m
+   totalInterestPaid: number;[m
+   totalAmountPaid: number;[m
+ }[m
+[36m@@ -37,6 +38,7 @@[m [mexport interface SingleDebtPayoffDetail {[m
+ export interface DebtStrategyResult {[m
+   strategy: 'snowball' | 'avalanche';[m
+   monthsToPayoff: number;[m
+[32m+[m[32m  paidOff: boolean;[m
+   payoffDate: string;[m
+   totalInterestPaid: number;[m
+   totalAmountPaid: number;[m
+[36m@@ -84,6 +86,7 @@[m [mexport interface SavingsGoalResult {[m
+   totalUserContributions: number;[m
+   estimatedGrowthInterest: number;[m
+   timeToGoalMonths: number;[m
+[32m+[m[32m  goalReached: boolean;[m
+   schedule: SavingsScheduleMonth[];[m
+ }[m
+ [m

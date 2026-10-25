@@ -3,10 +3,18 @@ import { AIExplanationRequest, AIExplanationResponse } from '@/types/financial';
 export async function generateFinancialExplanation(
   req: AIExplanationRequest
 ): Promise<AIExplanationResponse> {
-  const aiEnabled = process.env.AI_ENABLED !== 'false'; // Enabled by default or via fallback
-  const apiKey = process.env.OPENAI_API_KEY || process.env.GEMINI_API_KEY;
+  const aiEnabled = process.env.AI_ENABLED === 'true';
+  const apiKey = process.env.OPENAI_API_KEY;
 
   const timestamp = new Date().toISOString();
+
+  if (!aiEnabled) {
+    return { explanation: null, error: 'AI explanations are currently disabled. Your calculator results are still available above.', timestamp };
+  }
+
+  if (!apiKey) {
+    return { explanation: null, error: 'AI explanations are not configured. Your calculator results are still available above.', timestamp };
+  }
 
   // If live API key is present, attempt live LLM request
   if (apiKey) {
@@ -56,13 +64,7 @@ STRICT MANDATES:
     }
   }
 
-  // Smart Educational Explanation Engine (Fallback when no API key configured)
-  const explanation = buildSmartEducationalExplanation(req);
-  return {
-    explanation,
-    error: null,
-    timestamp,
-  };
+  return { explanation: null, error: 'The AI explanation service is unavailable. Your calculator results are still available above.', timestamp };
 }
 
 function buildSmartEducationalExplanation(req: AIExplanationRequest): string {

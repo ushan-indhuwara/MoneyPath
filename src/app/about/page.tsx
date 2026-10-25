@@ -35,7 +35,7 @@ export default function AboutPage() {
               CALCULATOR DOES THE MATH. AI EXPLAINS THE RESULT.
             </p>
             <p>
-              We firmly believe that financial math should be 100% deterministic and transparent. Every payoff schedule, savings projection, and compound interest curve on MoneyPath is calculated by peer-reviewed TypeScript code—never by an unpredictable LLM. Optional server-side AI is used exclusively to translate structured mathematical outcomes into plain, understandable English.
+              MoneyPath keeps the calculations separate from optional explanations. Payoff schedules and savings projections are computed by application code using documented assumptions; an AI model does not calculate balances. Optional explanations can describe the resulting figures when the site operator enables the feature.
             </p>
 
             <h2 className="text-xl font-bold text-slate-900 pt-4">Who We Target</h2>

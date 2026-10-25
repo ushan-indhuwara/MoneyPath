@@ -4,7 +4,7 @@ import { createPageMetadata } from '@/lib/seo';
 
 export const metadata = createPageMetadata(
   'Privacy Policy — MoneyPath AI',
-  'MoneyPath AI privacy policy detailing zero client financial data storage, local browser calculations, and AI privacy protections.',
+  'How MoneyPath processes calculator inputs, optional AI explanation requests, and local market preferences.',
   '/privacy-policy'
 );
 
@@ -21,30 +21,30 @@ export default function PrivacyPolicyPage() {
 
           <div className="prose prose-slate max-w-none space-y-6 text-slate-800 leading-relaxed text-base">
             <section className="space-y-2">
-              <h2 className="text-xl font-bold text-slate-900">1. Zero Financial Data Persistence</h2>
+              <h2 className="text-xl font-bold text-slate-900">1. Calculator inputs</h2>
               <p>
-                MoneyPath AI is designed from the ground up to respect user privacy. All inputs entered into our calculators (debt balances, APRs, savings amounts, retirement balances) are processed dynamically in your web browser. <strong>We do not save, store, or transmit your financial inputs to any persistent database.</strong>
+                Calculator math runs in your browser. Calculator inputs are not sent to our server unless you request an optional explanation. This site does not provide a user account or a feature to save calculator scenarios.
               </p>
             </section>
 
             <section className="space-y-2 border-t border-slate-100 pt-4">
               <h2 className="text-xl font-bold text-slate-900">2. No Personally Identifiable Information (PII)</h2>
               <p>
-                We do not ask for or collect names, Social Security Numbers, National Insurance Numbers, bank account numbers, credit card numbers, or home addresses.
+                The calculators do not ask for names, Social Security Numbers, National Insurance Numbers, bank account numbers, or home addresses. Do not enter identifying details in debt names or other free-text fields.
               </p>
             </section>
 
             <section className="space-y-2 border-t border-slate-100 pt-4">
               <h2 className="text-xl font-bold text-slate-900">3. AI Feature Data Handling</h2>
               <p>
-                If you voluntarily click the optional &quot;Explain My Results&quot; button, only minimum non-identifiable numeric scenario outputs (e.g., payoff months count, calculated interest difference) are sent to our server API route for plain-language interpretation. No personal identity data is ever attached or transmitted.
+                If you click &quot;Explain My Results&quot;, the displayed result figures and selected country are sent to this site&apos;s server. For savings and retirement scenarios, this includes entered amounts such as current savings and target amounts; debt account names and identifiers are not sent. If AI explanations are enabled by the site operator, the server sends the scenario figures to OpenAI to generate a response. Do not request an explanation if you do not want those figures processed this way. AI explanations are disabled unless the operator explicitly enables and configures them.
               </p>
             </section>
 
             <section className="space-y-2 border-t border-slate-100 pt-4">
               <h2 className="text-xl font-bold text-slate-900">4. Local Browser Storage</h2>
               <p>
-                We may store minor preference settings (such as your chosen market currency preference US $ or UK £) in your browser&apos;s <code className="bg-slate-100 px-1 py-0.5 rounded">localStorage</code> for convenience. You can clear this storage at any time via browser settings.
+                The selected US or UK market preference is stored in your browser&apos;s <code className="bg-slate-100 px-1 py-0.5 rounded">localStorage</code>. You can remove it through your browser settings.
               </p>
             </section>
           </div>

@@ -65,6 +65,8 @@ export default function DebtPayoffCalculatorPage() {
 
   const activeStrategyResult =
     selectedStrategyTab === 'avalanche' ? comparison.avalanche : comparison.snowball;
+  const minimumPaymentTotal = debts.reduce((total, debt) => total + (debt.balance > 0 ? Math.max(0, debt.minPayment) : 0), 0);
+  const monthlyBudget = minimumPaymentTotal + Math.max(0, extraPayment);
 
   // Chart data formatting
   const chartData = useMemo(() => {
@@ -90,8 +92,8 @@ export default function DebtPayoffCalculatorPage() {
 
   const copySummaryText = () => {
     const text = `MoneyPath AI Debt Payoff Estimate (${country}):
-Avalanche Strategy: Debt-free in ${formatDuration(comparison.avalanche.monthsToPayoff)} (${comparison.avalanche.payoffDate}), Total Interest: ${formatCurrency(comparison.avalanche.totalInterestPaid, country)}
-Snowball Strategy: Debt-free in ${formatDuration(comparison.snowball.monthsToPayoff)} (${comparison.snowball.payoffDate}), Total Interest: ${formatCurrency(comparison.snowball.totalInterestPaid, country)}
+Avalanche Strategy: ${comparison.avalanche.paidOff ? `Debt-free in ${formatDuration(comparison.avalanche.monthsToPayoff)} (${comparison.avalanche.payoffDate})` : 'Not paid off within 50 years'}, Total Interest: ${formatCurrency(comparison.avalanche.totalInterestPaid, country)}
+Snowball Strategy: ${comparison.snowball.paidOff ? `Debt-free in ${formatDuration(comparison.snowball.monthsToPayoff)} (${comparison.snowball.payoffDate})` : 'Not paid off within 50 years'}, Total Interest: ${formatCurrency(comparison.snowball.totalInterestPaid, country)}
 Estimated Avalanche Interest Saved: ${formatCurrency(comparison.interestDifference, country)}
 Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
 
@@ -107,7 +109,7 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
   return (
     <CalculatorLayout
       title="Debt Payoff Planner"
-      subtitle="Compare Debt Snowball vs Debt Avalanche strategies to find your fastest path to becoming debt-free."
+      subtitle="Compare two common payoff approaches using your balances, rates, and monthly payment budget."
       breadcrumbs={[
         { label: 'Calculators', href: '/#calculators' },
         { label: 'Debt Payoff Planner' },
@@ -115,13 +117,13 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
       inputsPanel={
         <div className="space-y-6">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h2 className="text-lg font-bold text-slate-900">Your Debts</h2>
+            <h2 className="text-base font-bold text-slate-900">Your debts & monthly budget</h2>
             <div className="flex gap-2">
               <button
                 onClick={loadExample}
                 className="text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg transition-colors"
               >
-                Load Example Data
+                Reset example
               </button>
               <button
                 onClick={resetAll}
@@ -173,7 +175,7 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
                   />
                   <CurrencyInput
                     id={`min_${debt.id}`}
-                    label="Min Payment"
+                    label="Minimum"
                     value={debt.minPayment}
                     onChange={(val) => updateDebt(debt.id, 'minPayment', val)}
                   />
@@ -192,16 +194,24 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
           <div className="pt-4 border-t border-slate-200">
             <CurrencyInput
               id="extra_payment"
-              label="Extra Monthly Payment Available"
+              label="Extra available each month"
               value={extraPayment}
               onChange={setExtraPayment}
-              helpText="Additional money paid each month on top of all minimum payments."
+              helpText="In addition to minimum payments. Paid-off minimums roll into the next debt."
             />
+            <div className="flex justify-between border-t border-slate-200 pt-4 text-sm">
+              <span className="text-slate-600">Estimated total monthly budget</span>
+              <strong className="text-slate-900">{formatCurrency(monthlyBudget, country)}</strong>
+            </div>
           </div>
         </div>
       }
       resultsPanel={
-        <div className="space-y-6">
+        <div className="space-y-5">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-lg font-bold text-slate-900">Your estimated comparison</h2>
+            <span className="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-800">Estimate, not a guarantee</span>
+          </div>
           {/* Warnings Banner if payments insufficient */}
           {comparison.warnings.length > 0 && (
             <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs space-y-1">
@@ -215,29 +225,42 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
             </div>
           )}
 
+          {(!comparison.avalanche.paidOff || !comparison.snowball.paidOff) && (
+            <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs" role="status">
+              <strong className="block mb-1">A payoff date could not be estimated</strong>
+              At least one strategy did not clear all debts within the 50-year projection limit. Review your payment amounts and interest rates.
+            </div>
+          )}
+
           {/* Strategy Comparison Side-by-Side */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <ComparisonCard
               title="Debt Avalanche"
               badgeText="Highest APR First"
-              payoffDate={comparison.avalanche.payoffDate}
-              monthsToPayoff={formatDuration(comparison.avalanche.monthsToPayoff)}
+              payoffDate={comparison.avalanche.paidOff ? comparison.avalanche.payoffDate : 'Not reached'}
+              monthsToPayoff={comparison.avalanche.paidOff ? formatDuration(comparison.avalanche.monthsToPayoff) : 'Not reached'}
               totalInterest={formatCurrency(comparison.avalanche.totalInterestPaid, country)}
               totalAmountPaid={formatCurrency(comparison.avalanche.totalAmountPaid, country)}
-              isHighlighted={comparison.recommendedByMath === 'avalanche'}
-              highlightText="Saves Most Interest"
+              isHighlighted={comparison.avalanche.paidOff && comparison.snowball.paidOff && comparison.recommendedByMath === 'avalanche'}
+              highlightText="Lower interest"
             />
 
             <ComparisonCard
               title="Debt Snowball"
               badgeText="Smallest Balance First"
-              payoffDate={comparison.snowball.payoffDate}
-              monthsToPayoff={formatDuration(comparison.snowball.monthsToPayoff)}
+              payoffDate={comparison.snowball.paidOff ? comparison.snowball.payoffDate : 'Not reached'}
+              monthsToPayoff={comparison.snowball.paidOff ? formatDuration(comparison.snowball.monthsToPayoff) : 'Not reached'}
               totalInterest={formatCurrency(comparison.snowball.totalInterestPaid, country)}
               totalAmountPaid={formatCurrency(comparison.snowball.totalAmountPaid, country)}
-              isHighlighted={comparison.recommendedByMath === 'snowball'}
-              highlightText="Quickest Wins"
+              isHighlighted={comparison.avalanche.paidOff && comparison.snowball.paidOff && comparison.recommendedByMath === 'snowball'}
+              highlightText="Lower interest"
             />
+          </div>
+
+          <div className="p-4 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-700 space-y-1.5">
+            <strong className="text-sm text-slate-900">What this estimate assumes</strong>
+            <p>Interest is approximated monthly using APR ÷ 12. Your total monthly budget stays constant, and freed minimum payments roll to the next debt.</p>
+            <p className="text-slate-500">Fees, promotional rates, and lender-specific daily interest rules are not included.</p>
           </div>
 
           {/* Key Delta Outcome Card */}
@@ -247,14 +270,18 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
                 Mathematical Comparison Difference
               </p>
               <h3 className="text-2xl font-bold text-white mt-1">
-                {comparison.interestDifference > 0 ? (
+                {!comparison.avalanche.paidOff || !comparison.snowball.paidOff ? (
+                  <>Interest accrued during the projection window</>
+                ) : comparison.interestDifference > 0 ? (
                   <>Avalanche saves {formatCurrency(comparison.interestDifference, country)} in interest</>
                 ) : (
                   <>Both strategies yield identical interest cost</>
                 )}
               </h3>
               <p className="text-xs text-emerald-200 mt-1">
-                {comparison.monthsDifference > 0
+                {!comparison.avalanche.paidOff || !comparison.snowball.paidOff
+                  ? 'Interest totals are limited to the 50-year projection window because at least one strategy did not reach debt-free.'
+                  : comparison.monthsDifference > 0
                   ? `Avalanche achieves debt freedom ${comparison.monthsDifference} months faster.`
                   : comparison.monthsDifference < 0
                   ? `Snowball achieves debt freedom ${Math.abs(comparison.monthsDifference)} months faster.`
@@ -326,7 +353,7 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
                       <td className="py-3 text-slate-700">{formatCurrency(detail.initialBalance, country)}</td>
                       <td className="py-3 text-slate-700">{detail.apr}%</td>
                       <td className="py-3 font-medium text-emerald-700">
-                        {formatDuration(detail.monthsToPayoff)}
+                        {detail.paidOff ? formatDuration(detail.monthsToPayoff) : 'Not reached'}
                       </td>
                       <td className="py-3 text-slate-700">{formatCurrency(detail.totalInterestPaid, country)}</td>
                       <td className="py-3 font-semibold text-slate-900">
@@ -364,7 +391,7 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
             <span>How This Debt Calculation Works</span>
           </div>
           <p>
-            Calculations convert APR to a monthly periodic interest rate applied to outstanding balance. Minimum payments are applied to active debts first; remaining extra funds are rolled into prioritized debts according to the selected strategy.
+            Calculations convert APR to an estimated monthly periodic rate applied to the outstanding balance. The entered total monthly budget is held constant: minimum payments are covered first, and any remaining budget—including minimums freed as debts are cleared—is directed by the selected strategy.
           </p>
           <Link href="/methodology" className="inline-block text-emerald-700 font-semibold hover:underline">
             Read full calculation methodology & assumptions →

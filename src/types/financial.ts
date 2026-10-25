@@ -30,6 +30,7 @@ export interface SingleDebtPayoffDetail {
   initialBalance: number;
   apr: number;
   monthsToPayoff: number;
+  paidOff: boolean;
   totalInterestPaid: number;
   totalAmountPaid: number;
 }
@@ -37,6 +38,7 @@ export interface SingleDebtPayoffDetail {
 export interface DebtStrategyResult {
   strategy: 'snowball' | 'avalanche';
   monthsToPayoff: number;
+  paidOff: boolean;
   payoffDate: string;
   totalInterestPaid: number;
   totalAmountPaid: number;
@@ -84,6 +86,7 @@ export interface SavingsGoalResult {
   totalUserContributions: number;
   estimatedGrowthInterest: number;
   timeToGoalMonths: number;
+  goalReached: boolean;
   schedule: SavingsScheduleMonth[];
 }
 

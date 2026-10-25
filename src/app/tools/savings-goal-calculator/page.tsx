@@ -180,12 +180,14 @@ Calculated at https://moneypathai.vercel.app/tools/savings-goal-calculator`;
               value={
                 mode === 'MODE_A'
                   ? formatCurrency(result.requiredMonthlyContribution, country)
-                  : formatDuration(result.timeToGoalMonths)
+                  : result.goalReached ? formatDuration(result.timeToGoalMonths) : 'Not reached'
               }
               subtext={
                 mode === 'MODE_A'
                   ? `To reach ${formatCurrency(result.targetAmount, country)} in ${formatDuration(result.timeToGoalMonths)}`
-                  : `With ${formatCurrency(result.requiredMonthlyContribution, country)} monthly deposit`
+                  : result.goalReached
+                    ? `With ${formatCurrency(result.requiredMonthlyContribution, country)} monthly deposit`
+                    : 'At this rate, the goal was not reached within 50 years'
               }
               variant="primary"
               icon={<Target className="w-5 h-5 text-emerald-300" />}
@@ -199,6 +201,13 @@ Calculated at https://moneypathai.vercel.app/tools/savings-goal-calculator`;
               icon={<PiggyBank className="w-5 h-5 text-slate-300" />}
             />
           </div>
+
+          {!result.goalReached && mode === 'MODE_B' && (
+            <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs" role="status">
+              <strong className="block mb-1">Goal not reached within 50 years</strong>
+              Increase your monthly contribution or review the target and assumed rate. This projection stops after 600 months.
+            </div>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <ResultCard
@@ -261,9 +270,7 @@ Calculated at https://moneypathai.vercel.app/tools/savings-goal-calculator`;
             <Info className="w-4 h-4 text-emerald-600" />
             <span>Hypothetical Calculation Notice</span>
           </div>
-          <p>
-            Savings growth assumes interest compounds at the end of each monthly period. Rates of return are hypothetical estimates and do not guarantee future earnings or protect against market risks.
-          </p>
+            <p>Savings growth assumes contributions are deposited at the end of each month and interest compounds monthly. The model uses an annual rate divided by 12, excludes fees, taxes, and inflation, and does not guarantee future returns.</p>
           <Link href="/methodology" className="inline-block text-emerald-700 font-semibold hover:underline">
             Read savings compound interest methodology →
           </Link>

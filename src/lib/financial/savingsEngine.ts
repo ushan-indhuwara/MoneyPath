@@ -59,6 +59,7 @@ export function calculateSavingsGoal(inputs: SavingsGoalInputs): SavingsGoalResu
       totalUserContributions: Math.round(totalContrib * 100) / 100,
       estimatedGrowthInterest: Math.round(totalInterest * 100) / 100,
       timeToGoalMonths: timeframeMonths,
+      goalReached: balance >= targetAmount,
       schedule,
     };
   } else {
@@ -104,6 +105,7 @@ export function calculateSavingsGoal(inputs: SavingsGoalInputs): SavingsGoalResu
       totalUserContributions: Math.round(totalContrib * 100) / 100,
       estimatedGrowthInterest: Math.round(totalInterest * 100) / 100,
       timeToGoalMonths: months,
+      goalReached: balance >= targetAmount,
       schedule,
     };
   }

@@ -60,6 +60,7 @@ export function calculateSingleDebtStrategy(
     return {
       strategy,
       monthsToPayoff: 0,
+      paidOff: true,
       payoffDate: getFutureDateString(0),
       totalInterestPaid: 0,
       totalAmountPaid: 0,
@@ -84,7 +85,10 @@ export function calculateSingleDebtStrategy(
 
   const schedule: DebtPayoffScheduleMonth[] = [];
   let currentMonth = 0;
-  let accumulatedExtraCents = toCents(Math.max(0, extraMonthlyPayment));
+  // Keep the user's total monthly budget constant. Minimum payments freed by
+  // paid debts become available to the next prioritized debt automatically.
+  const monthlyBudgetCents = validDebts.reduce((sum, debt) => sum + toCents(debt.minPayment), 0)
+    + toCents(Math.max(0, extraMonthlyPayment));
 
   while (currentMonth < MAX_PAYOFF_MONTHS) {
     // Check if all debts are paid
@@ -118,7 +122,7 @@ export function calculateSingleDebtStrategy(
     });
 
     // 3. Pay minimum payments across all active debts first
-    let availableExtraThisMonthCents = accumulatedExtraCents;
+    let minimumsPaidThisMonthCents = 0;
 
     for (const debt of remainingDebts) {
       if (debt.balanceCents <= 0) continue;
@@ -127,6 +131,7 @@ export function calculateSingleDebtStrategy(
       debt.balanceCents -= minPayment;
       debt.totalPaidCents += minPayment;
       monthPaymentCents += minPayment;
+      minimumsPaidThisMonthCents += minPayment;
 
       if (debt.balanceCents === 0 && debt.monthsToPayoff === 0) {
         debt.monthsToPayoff = currentMonth;
@@ -134,6 +139,7 @@ export function calculateSingleDebtStrategy(
     }
 
     // 4. Apply extra payments (and freed up min payments) to prioritized target debt(s)
+    let availableExtraThisMonthCents = Math.max(0, monthlyBudgetCents - minimumsPaidThisMonthCents);
     for (const targetDebt of sortedRemaining) {
       if (availableExtraThisMonthCents <= 0) break;
 
@@ -170,6 +176,8 @@ export function calculateSingleDebtStrategy(
     });
   }
 
+  const paidOff = activeDebts.every((debt) => debt.balanceCents <= 0);
+
   // Build individual debt detail list
   const debtDetails: SingleDebtPayoffDetail[] = activeDebts.map((d) => ({
     id: d.id,
@@ -177,6 +185,7 @@ export function calculateSingleDebtStrategy(
     initialBalance: fromCents(d.initialBalanceCents),
     apr: d.apr,
     monthsToPayoff: d.monthsToPayoff || currentMonth,
+    paidOff: d.balanceCents <= 0,
     totalInterestPaid: fromCents(d.totalInterestCents),
     totalAmountPaid: fromCents(d.totalPaidCents),
   }));
@@ -187,7 +196,8 @@ export function calculateSingleDebtStrategy(
   return {
     strategy,
     monthsToPayoff: currentMonth,
-    payoffDate: getFutureDateString(currentMonth),
+    paidOff,
+    payoffDate: paidOff ? getFutureDateString(currentMonth) : 'Not reached',
     totalInterestPaid: fromCents(totalInterestCents),
     totalAmountPaid: fromCents(totalAmountPaidCents),
     schedule,

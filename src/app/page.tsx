@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useCountry } from '@/lib/country/context';
 import {
   Calculator,
   PiggyBank,
@@ -17,8 +16,6 @@ import {
 } from 'lucide-react';
 
 export default function HomePage() {
-  const { country, currencySymbol } = useCountry();
-
   const articles = [
     {
       slug: 'debt-snowball-vs-avalanche',
@@ -81,13 +78,13 @@ export default function HomePage() {
               {/* Trust Badges */}
               <div className="pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-400 font-medium">
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 100% Free & No Sign-Up
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Free tools · No sign-up
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Lock className="w-4 h-4 text-emerald-400" /> Privacy-First (No PII Stored)
+                  <Lock className="w-4 h-4 text-emerald-400" /> Calculations run in your browser
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Brain className="w-4 h-4 text-emerald-400" /> Code Does Math, AI Explains
+                  <Brain className="w-4 h-4 text-emerald-400" /> AI explanations are optional
                 </span>
               </div>
             </div>
@@ -101,35 +98,35 @@ export default function HomePage() {
                     <div className="w-3 h-3 rounded-full bg-amber-500"></div>
                     <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
                   </div>
-                  <span className="text-xs font-mono text-slate-400">moneypathai.vercel.app/demo</span>
+                  <span className="text-xs font-mono text-slate-400">Illustrative example · Not a live result</span>
                 </div>
 
                 <div className="space-y-3">
                   <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-700 flex justify-between items-center">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">Avalanche Payoff</p>
-                      <p className="text-xl font-bold text-white mt-0.5">March 2028</p>
+                      <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">Debt payoff estimate</p>
+                      <p className="text-xl font-bold text-white mt-0.5">Compare two approaches</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-slate-400">Interest Saved</p>
-                      <p className="text-lg font-bold text-emerald-400">{currencySymbol}1,480</p>
+                      <p className="text-xs text-slate-400">Avalanche</p>
+                      <p className="text-lg font-bold text-emerald-400">Highest APR first</p>
                     </div>
                   </div>
 
                   <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-700 flex justify-between items-center">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-blue-400">Snowball Payoff</p>
-                      <p className="text-xl font-bold text-white mt-0.5">July 2028</p>
+                      <p className="text-xs font-bold uppercase tracking-wider text-blue-400">Snowball</p>
+                      <p className="text-xl font-bold text-white mt-0.5">Smallest balance first</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-slate-400">Quick Wins</p>
-                      <p className="text-sm font-semibold text-slate-300">Small debt paid in 3 mo</p>
+                      <p className="text-xs text-slate-400">Compare</p>
+                      <p className="text-sm font-semibold text-slate-300">Interest and payoff time</p>
                     </div>
                   </div>
 
                   <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/50 text-xs text-emerald-300 flex items-center gap-2">
                     <Sparkles className="w-4 h-4 shrink-0 text-emerald-400" />
-                    <span>AI Insights: Avalanche minimizes total interest paid across high APR credit accounts.</span>
+                    <span>See the estimate, payment assumptions, and limitations together.</span>
                   </div>
                 </div>
               </div>
@@ -223,9 +220,9 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-3">
               <Zap className="w-6 h-6 text-emerald-400" />
-              <h3 className="text-base font-bold">100% Deterministic Math</h3>
+              <h3 className="text-base font-bold">Deterministic Calculations</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Calculators run on tested TypeScript amortization algorithms. An LLM never calculates financial math.
+                Calculations use explicit formulas in the application code. An AI model does not calculate balances or payoff schedules.
               </p>
             </div>
 
@@ -241,7 +238,7 @@ export default function HomePage() {
               <Lock className="w-6 h-6 text-blue-400" />
               <h3 className="text-base font-bold">Privacy-First Architecture</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Your data stays in your browser. We never collect account numbers, SSNs, or store personal debt records.
+                Calculator inputs stay in your browser unless you request an explanation. Review our privacy policy for what that request sends.
               </p>
             </div>
 

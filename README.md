@@ -13,7 +13,7 @@ CALCULATOR DOES THE MATH.
 AI EXPLAINS THE RESULT.
 ```
 
-- All financial math runs strictly via peer-reviewed, deterministic TypeScript code.
+- Financial math is computed by deterministic TypeScript functions using the documented assumptions.
 - Large Language Models (LLMs) are **never** used to calculate balances, interest rates, or payoff timelines.
 - Optional server-side AI receives already-calculated numerical outputs to generate plain-language explanations.
 
@@ -27,8 +27,8 @@ AI EXPLAINS THE RESULT.
 - **Charts:** Recharts (Responsive debt decay, savings, and retirement graphs)
 - **Icons:** Lucide React
 - **Testing:** Vitest
-- **AI Backend:** Server-side Route Handler (`/api/explain`) with provider-neutral LLM abstraction
-- **Deployment:** Vercel / Cloudflare Pages / Netlify (100% Free tier compatible)
+- **AI Backend:** Optional server-side OpenAI explanation route (`/api/explain`)
+- **Deployment:** Next.js-compatible hosting providers (pricing and runtime limits depend on provider and usage)
 
 ---
 
@@ -116,7 +116,7 @@ npm start
 
 ## 🤖 How to Enable AI Explanations
 
-By default, the platform operates in `AI_ENABLED=false` mode. Calculators work 100% perfectly without AI.
+AI explanations are disabled unless explicitly enabled. The calculators work without an AI provider.
 
 To enable optional AI explanation generation:
 
@@ -136,7 +136,7 @@ To enable optional AI explanation generation:
 
 ## 🌐 Configuring US / UK Markets
 
-The application features a global Country Provider. Users can switch between **US ($)** and **UK (£)** via the header toggle.
+The application features a market and currency preference switch for **US ($)** and **UK (£)**. It changes currency formatting and selected terminology; it does not model country-specific tax, pension, or lender rules.
 
 - **US Mode:** Displays `$`, 401(k), IRA, CFPB reference links.
 - **UK Mode:** Displays `£`, Workplace Pension, ISA, MoneyHelper/FCA reference links.
@@ -173,7 +173,7 @@ The application features a global Country Provider. Users can switch between **U
 
 - [ ] Update `CONTACT_EMAIL` in `src/app/contact/page.tsx`.
 - [ ] Configure `NEXT_PUBLIC_SITE_URL` in `.env.local` to your domain.
-- [ ] Run `npm run test` (100% passing tests).
-- [ ] Run `npm run build` (Clean build without compilation errors).
+- [ ] Run `npm run test` and review the results.
+- [ ] Run `npm run build` and resolve any build errors.
 - [ ] Verify `AI_ENABLED` mode behavior.
 - [ ] Submit `sitemap.xml` to Google Search Console.
