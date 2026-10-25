@@ -6,6 +6,7 @@ import { RetirementInputs } from '@/types/financial';
 import { calculateRetirement } from '@/lib/financial/retirementEngine';
 import { formatCurrency } from '@/lib/financial/formatters';
 import { CalculatorLayout } from '@/components/ui/CalculatorLayout';
+import { ScenarioManager } from '@/components/ui/ScenarioManager';
 import { CurrencyInput } from '@/components/ui/CurrencyInput';
 import { PercentageInput } from '@/components/ui/PercentageInput';
 import { ResultCard } from '@/components/ui/ResultCard';
@@ -66,6 +67,21 @@ export default function RetirementCalculatorPage() {
     setMonthlyContribution(500);
     setAnnualGrowthRate(7.0);
     setAnnualContributionIncreasePercent(2.0);
+  };
+
+  const loadScenarioInputs = (inputs: Record<string, unknown>) => {
+    const setters: Array<[string, (value: number) => void]> = [
+      ['currentAge', setCurrentAge],
+      ['targetRetirementAge', setTargetRetirementAge],
+      ['currentSavings', setCurrentSavings],
+      ['monthlyContribution', setMonthlyContribution],
+      ['annualGrowthRate', setAnnualGrowthRate],
+      ['annualContributionIncreasePercent', setAnnualContributionIncreasePercent],
+    ];
+    setters.forEach(([key, setter]) => {
+      const value = inputs[key];
+      if (typeof value === 'number' && Number.isFinite(value)) setter(Math.max(0, value));
+    });
   };
 
   const copySummaryText = () => {
@@ -252,6 +268,17 @@ Calculated at https://moneypathai.vercel.app/tools/retirement-calculator`;
               variant="accent"
             />
           </div>
+
+          <ScenarioManager
+            type="retirement"
+            inputs={{ currentAge, targetRetirementAge, currentSavings, monthlyContribution, annualGrowthRate, annualContributionIncreasePercent }}
+            summary={`Base projection at age ${result.targetRetirementAge}: ${formatCurrency(result.baseScenario.projectedBalance, country)}.`}
+            metricLabel="Base scenario balance"
+            metricValue={result.baseScenario.projectedBalance}
+            metricFormatted={formatCurrency(result.baseScenario.projectedBalance, country)}
+            formatMetric={(value) => formatCurrency(value, country)}
+            onLoad={loadScenarioInputs}
+          />
 
           <div className="flex justify-end gap-3 no-print">
             <button

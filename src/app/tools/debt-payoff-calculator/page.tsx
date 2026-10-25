@@ -6,6 +6,7 @@ import { DebtItem } from '@/types/financial';
 import { calculateDebtComparison } from '@/lib/financial/debtEngine';
 import { formatCurrency, formatDuration } from '@/lib/financial/formatters';
 import { CalculatorLayout } from '@/components/ui/CalculatorLayout';
+import { ScenarioManager } from '@/components/ui/ScenarioManager';
 import { CurrencyInput } from '@/components/ui/CurrencyInput';
 import { PercentageInput } from '@/components/ui/PercentageInput';
 import { ResultCard, ComparisonCard } from '@/components/ui/ResultCard';
@@ -56,6 +57,21 @@ export default function DebtPayoffCalculatorPage() {
   const resetAll = () => {
     setDebts([{ id: 'd1', name: 'Credit Card', balance: 3000, apr: 19.9, minPayment: 90 }]);
     setExtraPayment(100);
+  };
+
+  const loadScenarioInputs = (inputs: Record<string, unknown>) => {
+    if (Array.isArray(inputs.debts)) {
+      const loadedDebts = inputs.debts.filter((item): item is DebtItem =>
+        item !== null && typeof item === 'object' &&
+        typeof (item as DebtItem).id === 'string' && typeof (item as DebtItem).name === 'string' &&
+        Number.isFinite((item as DebtItem).balance) && Number.isFinite((item as DebtItem).apr) &&
+        Number.isFinite((item as DebtItem).minPayment)
+      ).slice(0, 20);
+      if (loadedDebts.length) setDebts(loadedDebts);
+    }
+    if (typeof inputs.extraPayment === 'number' && Number.isFinite(inputs.extraPayment)) {
+      setExtraPayment(Math.max(0, inputs.extraPayment));
+    }
   };
 
   // Perform deterministic calculations
@@ -133,6 +149,13 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
             </div>
+          </div>
+
+          <div className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm leading-relaxed text-blue-950">
+            <strong>These are example figures.</strong> Replace them with your current balances, APRs, and required minimums to get a personal estimate. Your entries stay in this browser unless you request an AI explanation.
+            <Link href="/learn/debt-snowball-vs-avalanche" className="mt-2 inline-flex items-center font-semibold text-blue-800 hover:underline">
+              Learn how Snowball and Avalanche differ <span aria-hidden="true" className="ml-1">→</span>
+            </Link>
           </div>
 
           <div className="space-y-4 max-h-[500px] overflow-y-auto pr-1">
@@ -262,6 +285,17 @@ Calculated at https://moneypathai.vercel.app/tools/debt-payoff-calculator`;
             <p>Interest is approximated monthly using APR ÷ 12. Your total monthly budget stays constant, and freed minimum payments roll to the next debt.</p>
             <p className="text-slate-500">Fees, promotional rates, and lender-specific daily interest rules are not included.</p>
           </div>
+
+          <ScenarioManager
+            type="debt"
+            inputs={{ debts, extraPayment }}
+            summary={`Avalanche estimate: ${comparison.avalanche.paidOff ? formatDuration(comparison.avalanche.monthsToPayoff) : 'not reached'}; interest ${formatCurrency(comparison.avalanche.totalInterestPaid, country)}.`}
+            metricLabel="Avalanche interest"
+            metricValue={comparison.avalanche.totalInterestPaid}
+            metricFormatted={formatCurrency(comparison.avalanche.totalInterestPaid, country)}
+            formatMetric={(value) => formatCurrency(value, country)}
+            onLoad={loadScenarioInputs}
+          />
 
           {/* Key Delta Outcome Card */}
           <div className="p-5 rounded-2xl bg-emerald-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">

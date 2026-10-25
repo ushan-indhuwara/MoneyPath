@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { openPrivacyChoices } from '@/lib/analytics';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -94,6 +95,9 @@ export function Footer() {
                 <Link href="/privacy-policy" className="hover:text-emerald-400 transition-colors">
                   Privacy Policy
                 </Link>
+              </li>
+              <li>
+                <button onClick={openPrivacyChoices} className="text-left hover:text-emerald-400 transition-colors">Privacy choices</button>
               </li>
               <li>
                 <Link href="/financial-disclaimer" className="hover:text-emerald-400 transition-colors">

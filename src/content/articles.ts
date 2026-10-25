@@ -10,11 +10,15 @@ export interface ArticleData {
   sources: { title: string; url: string; org: string }[];
   datePublished?: string;
   seoTitle?: string;
+  calculatorHref?: string;
+  calculatorLabel?: string;
 }
 
 export const ARTICLES: ArticleData[] = [
   {
     slug: 'debt-snowball-vs-avalanche',
+    calculatorHref: '/tools/debt-payoff-calculator',
+    calculatorLabel: 'Try the Debt Payoff Planner',
     title: 'Debt Snowball vs. Debt Avalanche: Which Should You Choose?',
     seoTitle: 'Debt Snowball vs. Debt Avalanche: Which Is Better?',
     category: 'Debt Strategy',
@@ -143,70 +147,70 @@ The debt snowball emphasizes smaller early wins; the debt avalanche emphasizes p
   },
   {
     slug: 'what-is-apr-explained',
+    calculatorHref: '/tools/debt-payoff-calculator',
+    calculatorLabel: 'Compare debt payoff estimates',
     title: 'What Is APR and How Does It Affect Debt?',
     category: 'Debt Basics',
     date: 'September 2026',
     readTime: '4 min read',
-    excerpt: 'Learn how Annual Percentage Rates translate into monthly interest charges on credit cards and personal loans.',
+    excerpt: 'Understand what APR tells you, why monthly estimates differ from lender statements, and how rate assumptions affect debt payoff projections.',
     author: 'MoneyPath Editorial Team',
-    content: `**APR** stands for **Annual Percentage Rate**. It represents the annualized cost of borrowing money, expressed as a percentage of your balance.
+    content: `**APR** means Annual Percentage Rate. It is a way to express borrowing costs over a year, but an APR by itself does not tell you exactly what a lender will charge in a particular billing cycle. Your agreement may have different rates for purchases, cash advances, or promotional balances, and fees or rate changes can affect the total.
 
-### Annual Rate vs Monthly Interest
-Although APR is stated as an annual percentage (e.g. 24% APR), credit card lenders calculate interest on a monthly (or daily) basis.
+### A simple monthly estimate
+MoneyPath's debt calculator uses an approximate monthly rate: annual APR divided by 12. At a constant $5,000 balance and 24% APR, that simplified one-month estimate is $5,000 × (0.24 ÷ 12) = **$100 before payments or other charges**.
 
-To find your approximate monthly interest rate:
-$$\\text{Monthly Rate} = \\frac{\\text{APR}}{12}$$
+This is a planning approximation, not a statement calculation. Many card issuers calculate interest daily using a daily periodic rate and an average daily balance. The issuer's method and terms determine your actual charge. The [CFPB explains daily periodic rates](https://www.consumerfinance.gov/ask-cfpb/what-is-a-daily-periodic-rate-on-a-credit-card-en-46/).
 
-For example, a 24% APR equals a monthly periodic rate of **2% per month**. If you carry a balance of $5,000, your monthly interest charge will be approximately:
-$$\\text{Monthly Interest} = 5,000 \\times 0.02 = \\$100$$
+### Why the minimum payment matters
+Part of a payment may cover accrued interest, leaving the rest to reduce the balance. The exact split depends on your balance, rate, payment amount, fees, and payment-allocation rules. Check your statement and account agreement for the applicable details.
 
-### Why Minimum Payments Can Be Misleading
-Lenders often set minimum monthly payments at 1% to 2% of the balance plus interest. If your minimum payment is $125 and $100 goes toward monthly interest, only **$25** actually reduces your debt balance!
-
-Understanding your APR empowers you to calculate how much of your payment goes to interest versus debt reduction.`,
+Use the [Debt Payoff Planner](/tools/debt-payoff-calculator) to compare estimates under the monthly-rate assumption. Review the assumptions beside the results before using them to plan.`,
     sources: [
-      { title: 'Federal Reserve Board — Credit Card Rules & Disclosures', url: 'https://www.federalreserve.gov', org: 'Federal Reserve (US)' },
-      { title: 'Financial Conduct Authority — Understanding APR', url: 'https://www.fca.org.uk', org: 'FCA (UK)' },
+      { title: 'What is a daily periodic rate on a credit card?', url: 'https://www.consumerfinance.gov/ask-cfpb/what-is-a-daily-periodic-rate-on-a-credit-card-en-46/', org: 'Consumer Financial Protection Bureau' },
+      { title: 'How does my credit card company calculate interest?', url: 'https://www.consumerfinance.gov/ask-cfpb/how-does-my-credit-card-company-calculate-the-amount-of-interest-i-owe-en-51/', org: 'Consumer Financial Protection Bureau' },
     ],
   },
   {
     slug: 'how-credit-card-interest-works',
+    calculatorHref: '/tools/debt-payoff-calculator',
+    calculatorLabel: 'Estimate a debt payoff schedule',
     title: 'How Credit Card Interest Works',
     category: 'Debt Basics',
     date: 'September 2026',
     readTime: '5 min read',
-    excerpt: 'Understand grace periods, daily compounding interest, and how carrying a balance triggers interest charges.',
+    excerpt: 'Learn how daily balance methods and grace periods can affect interest, and why the card agreement matters.',
     author: 'MoneyPath Editorial Team',
-    content: `Credit cards are one of the most flexible payment tools, but carrying a balance from month to month can become expensive due to compounding interest.
+    content: `Credit-card interest depends on the balance type, APR, payment timing, and the method described in your card agreement. A monthly calculator can show a useful simplified estimate, but it cannot reproduce every issuer's statement calculation.
 
-### The Interest Grace Period
-If you pay your full statement balance on time every month, most credit cards offer a **grace period** (typically 21–25 days) during which no interest accrues on new purchases.
+### Daily balance calculations
+Many card issuers calculate interest each day using a daily periodic rate and a daily or average daily balance. The daily rate may be based on APR divided by 360 or 365, depending on the issuer and account terms. The [CFPB's explanation of daily periodic rates](https://www.consumerfinance.gov/ask-cfpb/what-is-a-daily-periodic-rate-on-a-credit-card-en-46/) describes the basic mechanics.
 
-However, if you pay anything less than the full statement balance, you lose the grace period. Interest immediately begins accruing on remaining balances and new purchases from the transaction date.
+### Grace periods vary by account
+Some cards let you avoid interest on new purchases when you pay the full statement balance by the due date, but the rules depend on the agreement and whether you carried a balance. Do not assume a grace period applies to every balance type or in every billing cycle. Check your statement or ask the issuer how it applies to your account.
 
-### Daily Compounding
-Most credit card companies use a **Daily Periodic Rate (DPR)**:
-$$\\text{DPR} = \\frac{\\text{APR}}{365}$$
+### Payments and timing
+When interest accrues daily, the timing of payments can affect the balance used in the calculation. Payment allocation can also depend on the account terms and applicable rules. Continue to meet the required minimum and review the issuer's instructions before relying on a simplified schedule.
 
-Each day, the DPR is multiplied by your Average Daily Balance and added to your balance, compounding daily over the billing cycle.
-
-### How Extra Payments Accelerate Payoff
-Because interest accrues daily on outstanding balances, paying extra money above the minimum payment reduces your principal balance earlier in the month, lowering the total interest accrued for subsequent days.`,
+The MoneyPath [Debt Payoff Planner](/tools/debt-payoff-calculator) uses monthly APR ÷ 12 estimates. It does not model daily balances, grace periods, fees, or promotional-rate rules.`,
     sources: [
-      { title: 'CFPB — How Credit Card Interest Works', url: 'https://www.consumerfinance.gov', org: 'CFPB (US)' },
+      { title: 'How does my credit card company calculate interest?', url: 'https://www.consumerfinance.gov/ask-cfpb/how-does-my-credit-card-company-calculate-the-amount-of-interest-i-owe-en-51/', org: 'Consumer Financial Protection Bureau' },
+      { title: 'What is a daily periodic rate on a credit card?', url: 'https://www.consumerfinance.gov/ask-cfpb/what-is-a-daily-periodic-rate-on-a-credit-card-en-46/', org: 'Consumer Financial Protection Bureau' },
     ],
   },
   {
     slug: 'how-compound-interest-works',
+    calculatorHref: '/tools/savings-goal-calculator',
+    calculatorLabel: 'Try a savings projection',
     title: 'How Compound Interest Works',
     category: 'Investing Basics',
     date: 'September 2026',
     readTime: '4 min read',
-    excerpt: 'Discover how earning interest on previous interest accelerates wealth creation over long time horizons.',
+    excerpt: 'See how monthly deposits and interest build over time, and where a simplified compound-growth estimate can differ from real returns.',
     author: 'MoneyPath Editorial Team',
-    content: `Albert Einstein famously called compound interest the "eighth wonder of the world." Unlike simple interest—where you earn returns only on your initial deposit—**compound interest** earns returns on both your initial deposit AND past accumulated interest.
+    content: `**Compound interest** means interest is added to a balance, so later interest can be earned on both the starting amount and earlier interest. Regular deposits can also grow over time, depending on the rate and when each deposit is made.
 
-### The Future Value Compound Interest Formula
+### Growth on a starting balance
 $$FV = P \\times (1 + r)^n$$
 
 Where:
@@ -215,63 +219,68 @@ Where:
 * $r$ = Periodic interest rate
 * $n$ = Number of compounding periods
 
+That formula covers a starting balance with no additional deposits. A savings plan with regular monthly deposits needs an additional contribution term, and its result depends on deposit timing. MoneyPath's savings calculator models deposits at the end of each month and applies an annual rate divided by 12. It does not include account fees, taxes, inflation, or changing rates.
+
 ### The Rule of 72
-To estimate how many years it will take for your money to double at a given annual return rate, divide 72 by the return percentage:
+The Rule of 72 is a rough mental estimate for how many years a balance might take to double at a steady annual rate:
 $$\\text{Years to Double} \\approx \\frac{72}{\\text{Annual Rate}}$$
 
-For example, at a **7% annual return**, your investment doubles in approximately $72 / 7 = 10.2$ years.
+At a constant **7% annual rate**, the rough estimate is 72 ÷ 7, or about 10 years. Actual savings rates can change, and investment returns are uncertain, so this is not a forecast.
 
 Test compound savings scenarios using the MoneyPath [Savings Goal Calculator](/tools/savings-goal-calculator).`,
     sources: [
-      { title: 'Investor.gov — SEC Compound Interest Calculator Guide', url: 'https://www.investor.gov', org: 'SEC (US)' },
+      { title: 'Compound Interest Calculator', url: 'https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator', org: 'U.S. Securities and Exchange Commission' },
     ],
   },
   {
     slug: 'how-to-set-a-realistic-savings-goal',
+    calculatorHref: '/tools/savings-goal-calculator',
+    calculatorLabel: 'Plan a monthly savings target',
     title: 'How to Set a Realistic Savings Goal',
     category: 'Savings',
     date: 'September 2026',
     readTime: '4 min read',
-    excerpt: 'Step-by-step framework for establishing actionable emergency funds, house down payments, or major purchase targets.',
+    excerpt: 'Turn a savings target into a monthly amount you can review against your timeframe and budget.',
     author: 'MoneyPath Editorial Team',
-    content: `Setting vague financial goals like "I want to save more money" rarely produces lasting results. Successful savings plans require specific targets, timeframes, and automation.
+    content: `A savings target becomes easier to plan when you connect three numbers: the amount you want, what you have already saved, and when you want to use the money. The monthly amount also needs to fit your real budget.
 
-### 1. Define the Specific Target Amount
-Whether building a 3-month emergency fund or saving $20,000 for a home deposit, calculate the exact dollar amount needed.
+### Work out a starting monthly amount
+Suppose your target is $20,000 (or £20,000), you have $3,000 (or £3,000) saved, and you have 24 months. Ignoring interest, the remaining $17,000 divided by 24 is about **$708.33 per month**. This is an example, not a recommended target; use the amount and timeframe that fit your circumstances.
 
-### 2. Establish a Realistic Timeframe
-Break large targets into monthly milestones. For example, saving $12,000 over 24 months requires **$500 per month** (assuming zero interest).
+### Consider the account and access you need
+An emergency reserve may need to be accessible, while money for a distant goal may have different requirements. Rates, access rules, fees, tax treatment, and protections vary by account and country. Check the terms directly rather than assuming a particular return. MoneyHelper's [guide to setting a savings goal](https://www.moneyhelper.org.uk/en/savings/types-of-savings/how-to-set-a-savings-goal) covers choosing a target, working out a monthly amount, and setting up regular saving.
 
-### 3. Account for Interest Growth
-If your savings sit in a High-Yield Savings Account (HYSA) or UK Cash ISA earning 4% to 5% interest, compounding interest lowers the monthly out-of-pocket contribution required.
+### Revisit the plan when things change
+If the monthly amount is too high, you can extend the timeframe, lower the target, or review your budget. If your rate changes or you make an extra deposit, recalculate. The MoneyPath [Savings Goal Calculator](/tools/savings-goal-calculator) can estimate a required monthly deposit or a time to goal using the rate you enter. Its result assumes a steady rate and monthly deposits; real accounts can differ.
 
-### 4. Automate Contributions
-Set up automatic bank transfers on payday. Treating savings as an automated non-negotiable expense ensures consistency.`,
+For emergency savings, choose an amount and access arrangement that make sense for your needs. MoneyHelper also explains [how much to save for emergencies](https://www.moneyhelper.org.uk/en/savings/types-of-savings/emergency-savings-how-much-is-enough).`,
     sources: [
-      { title: 'MoneyHelper — Building an Emergency Savings Buffer', url: 'https://www.moneyhelper.org.uk', org: 'MoneyHelper (UK)' },
+      { title: 'How to set a savings goal', url: 'https://www.moneyhelper.org.uk/en/savings/types-of-savings/how-to-set-a-savings-goal', org: 'MoneyHelper (UK)' },
+      { title: 'How much to save for an emergency', url: 'https://www.moneyhelper.org.uk/en/savings/types-of-savings/emergency-savings-how-much-is-enough', org: 'MoneyHelper (UK)' },
     ],
   },
   {
     slug: 'why-retirement-projections-are-estimates',
+    calculatorHref: '/tools/retirement-calculator',
+    calculatorLabel: 'Compare retirement scenarios',
     title: 'Why Retirement Projections Are Estimates, Not Guarantees',
     category: 'Retirement',
     date: 'September 2026',
     readTime: '5 min read',
     excerpt: 'Why market volatility, inflation, tax law changes, and sequence-of-returns risk mean retirement models are hypothetical scenarios.',
     author: 'MoneyPath Editorial Team',
-    content: `Financial calculators produce clean, crisp retirement balance numbers (e.g. "$1,250,000 at Age 65"). However, it is vital to understand that all long-term projections are **hypothetical educational scenarios**, not guarantees.
+    content: `A retirement calculator can show a large future balance, but it cannot predict what markets will return or how much that balance will buy. Treat the output as a hypothetical illustration based on the inputs, not a promise or a complete retirement plan.
 
-### Key Factors Impacting Actual Retirement Balances
+### What this projection assumes
+MoneyPath applies a steady monthly growth rate derived from the annual rate you enter. Contributions are added each month and can increase at each year-end if you enter an escalation rate. The conservative and optimistic figures are simply the entered base rate minus or plus two percentage points; they are not probabilities or forecasts.
 
-1. **Market Volatility & Non-Linear Returns:** Stock and bond markets do not yield smooth, static 7% annual returns every year. Market downturns early in retirement can significantly impact overall portfolio longevity.
-2. **Inflation Purchasing Power:** A $1,000,000 balance 30 years from now will buy less goods and services than $1,000,000 today due to cumulative inflation.
-3. **Tax Rates & Retirement Accounts:** Withdrawals from traditional 401(k) accounts or UK pensions are subject to income tax upon distribution, whereas Roth IRAs or UK ISAs offer tax-free withdrawals.
-4. **Lifestyle & Expense Changes:** Health expenses, housing adjustments, and economic shifts change monthly capital requirements.
+### What can change the real outcome
+Investment returns vary over time rather than arriving as a smooth monthly rate. Inflation affects future purchasing power. Fees, taxes, contribution changes, withdrawals, account rules, and the timing of market gains or losses can all make a real outcome differ from the projection. This calculator does not model those details.
 
-Always evaluate retirement readiness across multiple conservative and optimistic return scenarios using the MoneyPath [Retirement Growth Estimator](/tools/retirement-calculator).`,
+Use the MoneyPath [Retirement Growth Estimator](/tools/retirement-calculator) to see how the assumed rate changes the arithmetic. Then check account terms and country-specific guidance before making decisions.`,
     sources: [
-      { title: 'SEC Investor.gov — Planning for Retirement', url: 'https://www.investor.gov', org: 'SEC (US)' },
-      { title: 'GOV.UK — Workplace Pensions & Retirement', url: 'https://www.gov.uk', org: 'GOV.UK' },
+      { title: 'Compound Interest Calculator', url: 'https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator', org: 'U.S. Securities and Exchange Commission' },
+      { title: 'Workplace pensions', url: 'https://www.gov.uk/workplace-pensions', org: 'GOV.UK' },
     ],
   },
 ];

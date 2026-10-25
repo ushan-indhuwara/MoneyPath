@@ -14,6 +14,7 @@ import {
 import type { Metadata } from 'next';
 import { canonicalUrl, SITE_ORIGIN } from '@/lib/seo';
 import { ArticleContent } from '@/components/ui/ArticleContent';
+import { TrackedLink } from '@/components/ui/TrackedLink';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -200,12 +201,13 @@ export default async function ArticleDetailPage({ params }: Props) {
               Back to Learning Hub
             </Link>
 
-            <Link
-              href="/tools/debt-payoff-calculator"
+            <TrackedLink
+              href={article.calculatorHref || '/tools/debt-payoff-calculator'}
+              articleSlug={article.slug}
               className="inline-flex items-center gap-1 text-sm font-bold text-emerald-700 hover:text-emerald-800"
             >
-              Try Debt Payoff Planner →
-            </Link>
+              {article.calculatorLabel || 'Try a MoneyPath calculator'} →
+            </TrackedLink>
           </div>
         </div>
       </div>

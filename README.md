@@ -152,28 +152,30 @@ The application features a market and currency preference switch for **US ($)** 
 
 ---
 
-## 🌐 Free Deployment (Vercel)
+## 🌐 Deploy to Vercel
 
 1. Push your repository to GitHub.
-2. Sign in to [Vercel](https://vercel.com) (Free Tier).
+2. Sign in to [Vercel](https://vercel.com).
 3. Import your GitHub repository.
-4. Click **Deploy**. Vercel will automatically build the Next.js App Router static pages and API route.
+4. Deploy the project. Hosting features, quotas, and pricing depend on the selected plan.
 
 ---
 
 ## 🔍 Google Search Console & Analytics Setup
 
-1. Verify site ownership in [Google Search Console](https://search.google.com/search-console).
-2. Submit your sitemap URL: `https://moneypathai.vercel.app/sitemap.xml`.
-3. (Optional) For privacy-friendly analytics, add Vercel Analytics or Google Analytics in `src/app/layout.tsx`.
+1. Set `NEXT_PUBLIC_SITE_URL` to the deployed site's canonical origin in the host's environment settings.
+2. Verify site ownership in [Google Search Console](https://search.google.com/search-console) and submit `<your-site-origin>/sitemap.xml`.
+3. Review Search Console's query, page, and country reports to see what people find useful.
+4. Optional: add `NEXT_PUBLIC_GA_MEASUREMENT_ID` to the deployment environment. The site asks visitors for consent before loading Google Analytics. Product events include scenario save/load/export and guide-to-tool clicks; no financial values are sent.
 
 ---
 
 ## 📋 Pre-Launch Production Checklist
 
-- [ ] Update `CONTACT_EMAIL` in `src/app/contact/page.tsx`.
+- [ ] Confirm the public GitHub issue tracker is the feedback channel you want visitors to use.
 - [ ] Configure `NEXT_PUBLIC_SITE_URL` in `.env.local` to your domain.
 - [ ] Run `npm run test` and review the results.
 - [ ] Run `npm run build` and resolve any build errors.
 - [ ] Verify `AI_ENABLED` mode behavior.
 - [ ] Submit `sitemap.xml` to Google Search Console.
+- [ ] Confirm analytics consent and privacy-policy text match the deployed configuration.

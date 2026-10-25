@@ -9,8 +9,7 @@ export const metadata = createPageMetadata(
   '/contact'
 );
 
-// Configurable contact email placeholder
-const CONTACT_EMAIL = 'hello@moneypath.ai';
+const FEEDBACK_URL = 'https://github.com/ushanindhuwara-ship-it/MoneyPath/issues/new';
 
 export default function ContactPage() {
   return (
@@ -24,7 +23,7 @@ export default function ContactPage() {
               Contact MoneyPath AI
             </h1>
             <p className="text-lg text-slate-600 leading-relaxed">
-              Have feedback on our calculators or methodology? We would love to hear from you.
+              Report a confusing result, a calculation issue, or a suggestion for the site.
             </p>
           </div>
 
@@ -33,19 +32,18 @@ export default function ContactPage() {
               <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
                 <Mail className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900">Email Us</h3>
+              <h3 className="text-lg font-bold text-slate-900">Report an issue</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                For general inquiries, editorial corrections, or mathematical feedback:
+                Open a GitHub issue to send feedback to the project maintainers. You may need a GitHub account. Reports are public, so do not include balances, account details, or other private information.
               </p>
               <a
-                href={`mailto:${CONTACT_EMAIL}`}
+                href={FEEDBACK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-block font-bold text-emerald-700 hover:underline text-sm bg-white px-3 py-2 rounded-lg border border-slate-200"
               >
-                {CONTACT_EMAIL}
+                Open MoneyPath issue tracker
               </a>
-              <p className="text-[11px] text-slate-400">
-                Note: Replace {CONTACT_EMAIL} in <code className="bg-slate-200 px-1 rounded">src/app/contact/page.tsx</code> before production launch.
-              </p>
             </div>
 
             <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
@@ -54,7 +52,7 @@ export default function ContactPage() {
               </div>
               <h3 className="text-lg font-bold text-slate-900">Privacy Notice</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Please do not send private financial account details, Social Security Numbers, or passwords via email. We do not offer individual financial planning over email.
+                Please do not include private financial account details, government identifiers, or passwords in a report. MoneyPath does not offer individual financial planning.
               </p>
             </div>
           </div>

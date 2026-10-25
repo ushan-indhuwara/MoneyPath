@@ -23,7 +23,7 @@ export default function PrivacyPolicyPage() {
             <section className="space-y-2">
               <h2 className="text-xl font-bold text-slate-900">1. Calculator inputs</h2>
               <p>
-                Calculator math runs in your browser. Calculator inputs are not sent to our server unless you request an optional explanation. This site does not provide a user account or a feature to save calculator scenarios.
+                Calculator math runs in your browser. Inputs are not sent to our server unless you request an optional AI explanation. If you choose to save a scenario, its inputs and summary are stored in this browser&apos;s local storage; the site has no user account or server-side scenario library. You can remove saved scenarios from the calculator or clear browser storage.
               </p>
             </section>
 
@@ -42,9 +42,16 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section className="space-y-2 border-t border-slate-100 pt-4">
-              <h2 className="text-xl font-bold text-slate-900">4. Local Browser Storage</h2>
+              <h2 className="text-xl font-bold text-slate-900">4. Local browser storage</h2>
               <p>
-                The selected US or UK market preference is stored in your browser&apos;s <code className="bg-slate-100 px-1 py-0.5 rounded">localStorage</code>. You can remove it through your browser settings.
+                Saved scenarios, the selected US or UK market preference, and your analytics choice are stored in <code className="bg-slate-100 px-1 py-0.5 rounded">localStorage</code>. Exporting a scenario downloads a file containing its inputs and estimates. The Share Calculator button shares only the calculator page URL, without scenario amounts. You can delete saved scenarios in the tool or clear local storage in browser settings.
+              </p>
+            </section>
+
+            <section className="space-y-2 border-t border-slate-100 pt-4">
+              <h2 className="text-xl font-bold text-slate-900">5. Optional analytics</h2>
+              <p>
+                Analytics are disabled unless the site operator configures a Google Analytics measurement ID. When configured, analytics scripts load only after you choose Accept. If you decline, or do not make a choice, analytics stays off. With consent, the site records page views and limited actions such as saving, loading, or exporting a scenario and clicking from a guide to a calculator. It does not send calculator inputs, balances, or result amounts. Google Analytics may use cookies and browser signals. You can change your choice using the Privacy choices link in the footer. See <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google&apos;s privacy policy</a> for how Google processes analytics data.
               </p>
             </section>
           </div>

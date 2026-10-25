@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-export const SITE_ORIGIN = 'https://moneypathai.vercel.app';
+export const SITE_ORIGIN = (process.env.NEXT_PUBLIC_SITE_URL || 'https://moneypathai.vercel.app').replace(/\/+$/, '');
 
 export function canonicalUrl(path: string): string {
   const pathname = path.startsWith('/') ? path : `/${path}`;

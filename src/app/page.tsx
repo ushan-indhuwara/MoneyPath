@@ -54,7 +54,7 @@ export default function HomePage() {
                 Make your next money move <span className="text-emerald-700">with more clarity.</span>
               </h1>
               <p className="text-lg sm:text-xl text-slate-600 max-w-2xl leading-relaxed">
-                Explore debt payoff, savings and retirement scenarios with straightforward calculators that show the assumptions behind each estimate.
+                See how different debt payments, savings plans, and retirement assumptions could change your estimates—with the math and assumptions made clear.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                 <a
@@ -137,7 +137,7 @@ export default function HomePage() {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Popular Calculators</h2>
           <p className="mt-2 text-base text-slate-600">
-            Select a tool below to run deterministic math calculations tailored to your financial scenario.
+            Start with the decision you’re working through. Change the assumptions and compare possible outcomes.
           </p>
         </div>
 
@@ -150,7 +150,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900">Debt Payoff Planner</h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Add multiple credit cards or loans. Compare Debt Snowball vs Debt Avalanche side-by-side to find your fastest path to zero debt.
+                For credit cards and loans: compare Snowball and Avalanche payoff estimates, including projected time and interest.
               </p>
             </div>
             <Link

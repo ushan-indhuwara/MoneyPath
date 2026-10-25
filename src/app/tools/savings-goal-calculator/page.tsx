@@ -6,6 +6,7 @@ import { SavingsGoalInputs, SavingsMode } from '@/types/financial';
 import { calculateSavingsGoal } from '@/lib/financial/savingsEngine';
 import { formatCurrency, formatDuration } from '@/lib/financial/formatters';
 import { CalculatorLayout } from '@/components/ui/CalculatorLayout';
+import { ScenarioManager } from '@/components/ui/ScenarioManager';
 import { CurrencyInput } from '@/components/ui/CurrencyInput';
 import { PercentageInput } from '@/components/ui/PercentageInput';
 import { ResultCard } from '@/components/ui/ResultCard';
@@ -56,6 +57,21 @@ export default function SavingsGoalCalculatorPage() {
     setCurrentSavings(3000);
     setGoalTimeframeMonths(18);
     setAnnualInterestRate(5.0);
+  };
+
+  const loadScenarioInputs = (inputs: Record<string, unknown>) => {
+    if (inputs.mode === 'MODE_A' || inputs.mode === 'MODE_B') setMode(inputs.mode);
+    const setters: Array<[string, (value: number) => void]> = [
+      ['targetAmount', setTargetAmount],
+      ['currentSavings', setCurrentSavings],
+      ['goalTimeframeMonths', setGoalTimeframeMonths],
+      ['monthlyContribution', setMonthlyContribution],
+      ['annualInterestRate', setAnnualInterestRate],
+    ];
+    setters.forEach(([key, setter]) => {
+      const value = inputs[key];
+      if (typeof value === 'number' && Number.isFinite(value)) setter(Math.max(0, value));
+    });
   };
 
   const copySummaryText = () => {
@@ -224,6 +240,17 @@ Calculated at https://moneypathai.vercel.app/tools/savings-goal-calculator`;
               icon={<TrendingUp className="w-5 h-5 text-emerald-600" />}
             />
           </div>
+
+          <ScenarioManager
+            type="savings"
+            inputs={{ mode, targetAmount, currentSavings, goalTimeframeMonths, monthlyContribution, annualInterestRate }}
+            summary={`Projected value ${formatCurrency(result.projectedEndingValue, country)}; ${result.goalReached ? `goal in ${formatDuration(result.timeToGoalMonths)}` : 'goal not reached in 50 years'}.`}
+            metricLabel="Projected ending value"
+            metricValue={result.projectedEndingValue}
+            metricFormatted={formatCurrency(result.projectedEndingValue, country)}
+            formatMetric={(value) => formatCurrency(value, country)}
+            onLoad={loadScenarioInputs}
+          />
 
           {/* Action Row */}
           <div className="flex justify-end gap-3 no-print">
