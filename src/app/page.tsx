@@ -38,95 +38,92 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 space-y-20 pb-20">
+    <div className="min-h-screen bg-white text-slate-900 space-y-20 pb-20">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-slate-900 text-white pt-16 pb-20 lg:pt-24 lg:pb-28">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-900/40 via-slate-900 to-slate-950"></div>
+      <section className="relative overflow-hidden bg-[#f3f8f5] text-slate-900 pt-14 pb-16 lg:pt-20 lg:pb-24">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_78%_20%,rgba(16,185,129,0.12),transparent_38%)]"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Hero Copy */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-white text-emerald-800 border border-emerald-200 shadow-sm">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Deterministic Math + Optional AI Explanations</span>
+                <span>Free, practical tools for your next money decision</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
-                Make sense of <br className="hidden sm:inline" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
-                  your money.
-                </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-950 leading-[1.08]">
+                Make your next money move <span className="text-emerald-700">with more clarity.</span>
               </h1>
-              <p className="text-lg sm:text-xl text-slate-300 max-w-2xl leading-relaxed">
-                Free calculators that help you understand debt, savings and long-term financial scenarios—without confusing spreadsheets.
+              <p className="text-lg sm:text-xl text-slate-600 max-w-2xl leading-relaxed">
+                Explore debt payoff, savings and retirement scenarios with straightforward calculators that show the assumptions behind each estimate.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                 <a
                   href="#calculators"
-                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base shadow-lg shadow-emerald-900/30 transition-all text-center flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-base shadow-lg shadow-emerald-900/15 transition-all text-center flex items-center justify-center gap-2"
                 >
                   <span>Explore Calculators</span>
                   <ArrowRight className="w-5 h-5" />
                 </a>
                 <Link
                   href="/tools/debt-payoff-calculator"
-                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-base border border-slate-700 transition-all text-center"
+                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-semibold text-base border border-slate-200 shadow-sm transition-all text-center"
                 >
                   Start With Debt Payoff
                 </Link>
               </div>
 
               {/* Trust Badges */}
-              <div className="pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-400 font-medium">
+              <div className="pt-6 border-t border-slate-200 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-600 font-medium">
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Free tools · No sign-up
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700" /> Free tools · No sign-up
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Lock className="w-4 h-4 text-emerald-400" /> Calculations run in your browser
+                  <Lock className="w-4 h-4 text-emerald-700" /> Calculations run in your browser
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Brain className="w-4 h-4 text-emerald-400" /> AI explanations are optional
+                  <Brain className="w-4 h-4 text-emerald-700" /> AI explanations are optional
                 </span>
               </div>
             </div>
 
             {/* Hero Visual Mockup */}
             <div className="lg:col-span-5">
-              <div className="p-6 rounded-2xl bg-slate-800/90 border border-slate-700/80 shadow-2xl space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-700 pb-3">
+              <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xl shadow-slate-900/10 space-y-4 rotate-0 lg:rotate-1">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-rose-500"></div>
                     <div className="w-3 h-3 rounded-full bg-amber-500"></div>
                     <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
                   </div>
-                  <span className="text-xs font-mono text-slate-400">Illustrative example · Not a live result</span>
+                  <span className="text-xs font-semibold text-slate-500">A clearer way to compare</span>
                 </div>
 
                 <div className="space-y-3">
-                  <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-700 flex justify-between items-center">
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center gap-3">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">Debt payoff estimate</p>
-                      <p className="text-xl font-bold text-white mt-0.5">Compare two approaches</p>
+                      <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Start with a question</p>
+                      <p className="text-lg font-bold text-slate-900 mt-0.5">Which debt should I pay first?</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-slate-400">Avalanche</p>
-                      <p className="text-lg font-bold text-emerald-400">Highest APR first</p>
+                      <p className="text-xs text-slate-500">Compare</p>
+                      <p className="text-sm font-bold text-emerald-800">Two strategies</p>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-700 flex justify-between items-center">
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 flex justify-between items-center gap-3">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-blue-400">Snowball</p>
-                      <p className="text-xl font-bold text-white mt-0.5">Smallest balance first</p>
+                      <p className="text-xs font-bold uppercase tracking-wider text-blue-700">See the trade-off</p>
+                      <p className="text-lg font-bold text-slate-900 mt-0.5">Motivation or interest?</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-slate-400">Compare</p>
-                      <p className="text-sm font-semibold text-slate-300">Interest and payoff time</p>
+                      <p className="text-xs text-slate-500">Results include</p>
+                      <p className="text-sm font-semibold text-slate-700">Time and interest estimates</p>
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/50 text-xs text-emerald-300 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 shrink-0 text-emerald-400" />
-                    <span>See the estimate, payment assumptions, and limitations together.</span>
+                  <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-100 text-xs text-emerald-900 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-700" />
+                    <span>Educational estimates, with assumptions shown alongside results.</span>
                   </div>
                 </div>
               </div>
@@ -208,47 +205,36 @@ export default function HomePage() {
       </section>
 
       {/* Why MoneyPath Section */}
-      <section className="bg-slate-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl font-extrabold tracking-tight">Why MoneyPath AI Is Different</h2>
-            <p className="mt-2 text-slate-400">
-              We built MoneyPath around clarity, mathematical accuracy, and user privacy.
+      <section className="bg-slate-50 py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="max-w-2xl">
+            <p className="text-sm font-bold uppercase tracking-wider text-emerald-700">A clearer way to plan</p>
+            <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950">Useful answers, without the guesswork.</h2>
+            <p className="mt-3 text-base leading-relaxed text-slate-600">
+              MoneyPath helps you explore possible outcomes. You stay in control of your choices and can see how each estimate is made.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-3">
-              <Zap className="w-6 h-6 text-emerald-400" />
-              <h3 className="text-base font-bold">Deterministic Calculations</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Calculations use explicit formulas in the application code. An AI model does not calculate balances or payoff schedules.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <article className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+              <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center"><Zap className="w-5 h-5 text-emerald-700" /></div>
+              <div><h3 className="text-base font-bold text-slate-900">Numbers from clear formulas</h3><p className="mt-2 text-sm text-slate-600 leading-relaxed">The calculators handle the math. AI does not decide your balances, growth, or payoff schedule.</p></div>
+            </article>
 
-            <div className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-3">
-              <Brain className="w-6 h-6 text-teal-400" />
-              <h3 className="text-base font-bold">AI Explains Results</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Optional AI translates calculated numbers into plain-language trade-offs and options without pushing products.
-              </p>
-            </div>
+            <article className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+              <div className="w-11 h-11 rounded-xl bg-teal-50 flex items-center justify-center"><Brain className="w-5 h-5 text-teal-700" /></div>
+              <div><h3 className="text-base font-bold text-slate-900">Explanations when you want them</h3><p className="mt-2 text-sm text-slate-600 leading-relaxed">Optional AI can explain a result in plain language. You can use every calculator without it.</p></div>
+            </article>
 
-            <div className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-3">
-              <Lock className="w-6 h-6 text-blue-400" />
-              <h3 className="text-base font-bold">Privacy-First Architecture</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Calculator inputs stay in your browser unless you request an explanation. Review our privacy policy for what that request sends.
-              </p>
-            </div>
+            <article className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+              <div className="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center"><Lock className="w-5 h-5 text-blue-700" /></div>
+              <div><h3 className="text-base font-bold text-slate-900">Your inputs stay on your device</h3><p className="mt-2 text-sm text-slate-600 leading-relaxed">Calculator inputs are processed in your browser. An AI explanation sends the information described in our privacy policy.</p><Link href="/privacy-policy" className="mt-3 inline-flex text-sm font-bold text-blue-700 hover:text-blue-900">Read the privacy policy <ArrowRight className="ml-1 h-4 w-4" /></Link></div>
+            </article>
 
-            <div className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-3">
-              <ShieldCheck className="w-6 h-6 text-amber-400" />
-              <h3 className="text-base font-bold">Transparent Assumptions</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                All interest rules, compounding frequencies, and limitations are documented openly in our Methodology.
-              </p>
-            </div>
+            <article className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+              <div className="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center"><ShieldCheck className="w-5 h-5 text-amber-700" /></div>
+              <div><h3 className="text-base font-bold text-slate-900">Assumptions made visible</h3><p className="mt-2 text-sm text-slate-600 leading-relaxed">Results are estimates, not promises. Review the calculation methods and limits before relying on them.</p><Link href="/methodology" className="mt-3 inline-flex text-sm font-bold text-amber-800 hover:text-amber-950">See how calculations work <ArrowRight className="ml-1 h-4 w-4" /></Link></div>
+            </article>
           </div>
         </div>
       </section>
