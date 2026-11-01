@@ -39,7 +39,10 @@ export const metadata: Metadata = {
   creator: 'MoneyPath AI',
 
   verification: {
-    google: 'G9VM_6PYGSAcUVxe55U-E_H1S5VQreyzTJ8iqjIW5Ro',
+    google: [
+      'G9VM_6PYGSAcUVxe55U-E_H1S5VQreyzTJ8iqjIW5Ro',
+      'hy6--PnuGEJaOGtsuZORa6iyAbyPTfohmmBJIw7X760',
+    ],
   },
 
   openGraph: {
