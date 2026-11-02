@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 
-const configuredMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+const configuredMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-NHDM7MJ8X2';
 const measurementId = /^G-[A-Z0-9]+$/.test(configuredMeasurementId) ? configuredMeasurementId : undefined;
 type ConsentChoice = 'accepted' | 'declined' | null;
 
